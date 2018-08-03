@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="i.am.lucky">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <!-- bugly start -->
+    <uses-permission
+        android:name="android.permission.READ_LOGS"
+        tools:ignore="ProtectedPermissions" />
+
+    <application
+        android:name=".app.RootApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_main_name"
+        android:theme="@style/AppTheme"
+        tools:replace="android:icon,android:label">
+        <activity
+            android:name=".MainActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyScrollPage" />
+        <activity
+            android:name=".ui.TransitionActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/ViewBigPicTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.movie.TestActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyScrollPage" />
+        <activity
+            android:name=".ui.movie.SlideActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyScrollPage" />
+        <activity
+            android:name=".ui.movie.SlideScrollViewActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyScrollPage" />
+        <activity
+            android:name=".ui.movie.SlideShadeViewActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyScrollPage" />
+        <activity
+            android:name=".ui.movie.MovieDetailActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyScrollPage" />
+        <activity
+            android:name=".view.viewbigimage.ViewBigImageActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/ViewBigPicTheme" />
+        <activity
+            android:name=".view.webview.WebViewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.movie.DouBanTopActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.movie.OneMovieDetailActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyScrollPage" />
+        <activity
+            android:name=".ui.menu.NavHomePageActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/HomePageTheme" />
+        <activity
+            android:name=".ui.menu.NavDeedBackActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.menu.NavAboutActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.wan.child.BookDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.menu.NavDownloadActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.menu.LoginActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.wan.child.ArticleListActivity"
+            android:screenOrientation="portrait" />
+    </application>
+
+</manifest>
