@@ -7,6 +7,7 @@ import android.net.Uri;
 import i.am.lucky.R;
 
 /**
+ * 分享工具类
  * Created by Cazaea on 2016/12/28.
  */
 
@@ -14,6 +15,15 @@ public class ShareUtils {
 
     public static void share(Context context, int stringRes) {
         share(context, context.getString(stringRes));
+    }
+
+    public static void share(Context context, String extraText) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.action_share));
+        intent.putExtra(Intent.EXTRA_TEXT, extraText);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(Intent.createChooser(intent, context.getString(R.string.action_share)));
     }
 
     public static void shareImage(Context context, Uri uri, String title) {
@@ -25,13 +35,4 @@ public class ShareUtils {
     }
 
 
-    public static void share(Context context, String extraText) {
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.action_share));
-        intent.putExtra(Intent.EXTRA_TEXT, extraText);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(
-                Intent.createChooser(intent, context.getString(R.string.action_share)));
-    }
 }

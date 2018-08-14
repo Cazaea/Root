@@ -1,5 +1,6 @@
 package i.am.lucky;
 
+import android.annotation.SuppressLint;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -46,10 +47,10 @@ import i.am.lucky.view.statusbar.StatusBarUtil;
 import i.am.lucky.view.webview.WebViewActivity;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
-
 
 /**
  * Created by Cazaea on 16/11/21.
@@ -93,6 +94,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mBinding.include.viewStatus.setLayoutParams(layoutParams);
     }
 
+    @SuppressLint("RestrictedApi")
     private void initId() {
         drawerLayout = mBinding.drawerLayout;
         navView = mBinding.navView;
@@ -121,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         navView.inflateHeaderView(R.layout.nav_header_main);
         View headerView = navView.getHeaderView(0);
         bind = DataBindingUtil.bind(headerView);
-        bind.setListener(this);
+        Objects.requireNonNull(bind).setListener(this);
         bind.dayNightSwitch.setChecked(SPUtils.getNightMode());
 
         ImgLoadUtil.displayCircle(bind.ivAvatar, ConstantsImageUrl.IC_AVATAR);
@@ -151,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            //去除默认Title显示
+            // 去除默认Title显示
             actionBar.setDisplayShowTitleEnabled(false);
         }
         setCurrentItem(0);
@@ -208,15 +210,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 // 开启菜单
                 drawerLayout.openDrawer(GravityCompat.START);
                 break;
-            case R.id.iv_title_two:
-                // 不然cpu会有损耗
-                if (vpContent.getCurrentItem() != 1) {
-                    setCurrentItem(1);
-                }
-                break;
             case R.id.iv_title_one:
+                // 不然cpu会有损耗
                 if (vpContent.getCurrentItem() != 0) {
                     setCurrentItem(0);
+                }
+                break;
+            case R.id.iv_title_two:
+                if (vpContent.getCurrentItem() != 1) {
+                    setCurrentItem(1);
                 }
                 break;
             case R.id.iv_title_three:

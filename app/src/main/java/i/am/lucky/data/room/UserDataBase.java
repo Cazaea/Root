@@ -5,6 +5,7 @@ import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.arch.persistence.room.migration.Migration;
+import android.support.annotation.NonNull;
 
 import i.am.lucky.app.RootApplication;
 
@@ -27,9 +28,9 @@ public abstract class UserDataBase extends RoomDatabase {
      * 版本号迁移：
      * http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2017/0728/8278.html
      */
-    static final Migration MIGRATION_1_2 = new Migration(1, 2) {
+    private static final Migration MIGRATION_1_2 = new Migration(1, 2) {
         @Override
-        public void migrate(SupportSQLiteDatabase database) {
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
             // Since we didn't alter the table, there's nothing else to do here.
         }
     };

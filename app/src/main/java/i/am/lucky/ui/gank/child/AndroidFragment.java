@@ -13,6 +13,7 @@ import i.am.lucky.bean.GankIoDataBean;
 import i.am.lucky.databinding.FragmentAndroidBinding;
 import i.am.lucky.viewmodel.gank.BigAndroidNavigator;
 import i.am.lucky.viewmodel.gank.BigAndroidViewModel;
+
 import i.am.lucky.recycler.XRecyclerView;
 
 /**

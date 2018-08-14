@@ -16,7 +16,7 @@ public class Constants {
     public static String BANNER_PIC = "banner_pic";
     // 保存每日推荐轮播图的跳转数据
     public static String BANNER_PIC_DATA = "banner_pic_data";
-    // 保存每日推荐recyclerview内容
+    // 保存每日推荐RecyclerView内容
     public static String EVERYDAY_CONTENT = "everyday_content";
     // 干货订制类别
     public static String GANK_CALA = "gank_cala";

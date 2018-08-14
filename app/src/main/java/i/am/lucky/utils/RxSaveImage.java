@@ -48,40 +48,37 @@ import rx.schedulers.Schedulers;
 public class RxSaveImage {
 
     private static Observable<Uri> saveImageAndGetPathObservable(Activity context, String url, String title) {
-        return Observable.unsafeCreate(new Observable.OnSubscribe<Bitmap>() {
-            @Override
-            public void call(Subscriber<? super Bitmap> subscriber) {
-                // 检查路径
-                if (TextUtils.isEmpty(url) || TextUtils.isEmpty(title)) {
-                    subscriber.onError(new Exception("请检查图片路径"));
-                }
-                // 检查图片是否已存在
-                File appDir = new File(Environment.getExternalStorageDirectory(), "云阅相册");
-                if (appDir.exists()) {
-                    String fileName = title.replace('/', '-') + ".jpg";
-                    File file = new File(appDir, fileName);
-                    if (file.exists()) {
-                        subscriber.onError(new Exception("图片已存在"));
-                    }
-                }
-                // 获得Bitmap
-                Bitmap bitmap = null;
-                try {
-                    bitmap = Glide.with(context)
-                            .load(url)
-                            .asBitmap()
-                            .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
-                            .get();
-
-                } catch (Exception e) {
-                    subscriber.onError(e);
-                }
-                if (bitmap == null) {
-                    subscriber.onError(new Exception("无法下载到图片"));
-                }
-                subscriber.onNext(bitmap);
-                subscriber.onCompleted();
+        return Observable.unsafeCreate((Observable.OnSubscribe<Bitmap>) subscriber -> {
+            // 检查路径
+            if (TextUtils.isEmpty(url) || TextUtils.isEmpty(title)) {
+                subscriber.onError(new Exception("请检查图片路径"));
             }
+            // 检查图片是否已存在
+            File appDir = new File(Environment.getExternalStorageDirectory(), "云阅相册");
+            if (appDir.exists()) {
+                String fileName = title.replace('/', '-') + ".jpg";
+                File file = new File(appDir, fileName);
+                if (file.exists()) {
+                    subscriber.onError(new Exception("图片已存在"));
+                }
+            }
+            // 获得Bitmap
+            Bitmap bitmap = null;
+            try {
+                bitmap = Glide.with(context)
+                        .load(url)
+                        .asBitmap()
+                        .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                        .get();
+
+            } catch (Exception e) {
+                subscriber.onError(e);
+            }
+            if (bitmap == null) {
+                subscriber.onError(new Exception("无法下载到图片"));
+            }
+            subscriber.onNext(bitmap);
+            subscriber.onCompleted();
         }).flatMap(bitmap -> {
             File appDir = new File(Environment.getExternalStorageDirectory(), "云阅相册");
             if (!appDir.exists()) {

@@ -8,7 +8,7 @@ import java.util.List;
  * 轮播图bean
  */
 
-public class FrontpageBean implements Serializable {
+public class FrontPageBean implements Serializable {
 
     private ResultBannerBean result;
     private int error_code;

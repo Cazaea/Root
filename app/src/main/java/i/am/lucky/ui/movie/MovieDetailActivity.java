@@ -1,5 +1,6 @@
 package i.am.lucky.ui.movie;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -24,6 +25,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+
+import java.util.Objects;
+
 import i.am.lucky.R;
 import i.am.lucky.adapter.MovieDetailAdapter;
 import i.am.lucky.bean.MovieDetailBean;
@@ -47,7 +51,7 @@ import rx.schedulers.Schedulers;
 import static i.am.lucky.view.statusbar.StatusBarUtil.getStatusBarHeight;
 
 /**
- * （已可以使用：OneMovieDetailActivity.java 替代）
+ * （已使用：{@link OneMovieDetailActivity} 替代）
  * 思路：
  * 1、透明状态栏（透明titlebar,使背景图上移）
  * 2、titlebar底部增加和背景一样的高斯模糊图，并上移图片的高度-titlebar的高度（为了使背景图的底部作为titlebar的背景）
@@ -104,6 +108,7 @@ public class MovieDetailActivity extends AppCompatActivity {
 
                     }
 
+                    @SuppressLint("SetTextI18n")
                     @Override
                     public void onNext(final MovieDetailBean movieDetailBean) {
                         // 上映日期
@@ -126,23 +131,20 @@ public class MovieDetailActivity extends AppCompatActivity {
      * 异步线程转换数据
      */
     private void transformData(final MovieDetailBean movieDetailBean) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                for (int i = 0; i < movieDetailBean.getDirectors().size(); i++) {
-                    movieDetailBean.getDirectors().get(i).setType("导演");
-                }
-                for (int i = 0; i < movieDetailBean.getCasts().size(); i++) {
-                    movieDetailBean.getCasts().get(i).setType("演员");
-                }
-
-                MovieDetailActivity.this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        setAdapter(movieDetailBean);
-                    }
-                });
+        new Thread(() -> {
+            for (int i = 0; i < movieDetailBean.getDirectors().size(); i++) {
+                movieDetailBean.getDirectors().get(i).setType("导演");
             }
+            for (int i = 0; i < movieDetailBean.getCasts().size(); i++) {
+                movieDetailBean.getCasts().get(i).setType("演员");
+            }
+
+            MovieDetailActivity.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    setAdapter(movieDetailBean);
+                }
+            });
         }).start();
     }
 
@@ -200,23 +202,15 @@ public class MovieDetailActivity extends AppCompatActivity {
 
         binding.titleToolBar.inflateMenu(R.menu.movie_detail);
         binding.titleToolBar.setOverflowIcon(ContextCompat.getDrawable(this, R.drawable.actionbar_more));
-        binding.titleToolBar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        binding.titleToolBar.setNavigationOnClickListener(v -> onBackPressed());
 
-        binding.titleToolBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.actionbar_more:// 更多信息
-                        WebViewActivity.loadUrl(MovieDetailActivity.this,mMoreUrl,mMovieName);
-                        break;
-                }
-                return false;
+        binding.titleToolBar.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.actionbar_more:// 更多信息
+                    WebViewActivity.loadUrl(MovieDetailActivity.this, mMoreUrl, mMovieName);
+                    break;
             }
+            return false;
         });
     }
 
@@ -233,7 +227,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         final int headerBgHeight = toolbarHeight + getStatusBarHeight(this);
         Log.i(TAG, "headerBgHeight:" + headerBgHeight);
 
-        // 使背景图向上移动到图片的最低端，保留（titlebar+statusbar）的高度
+        // 使背景图向上移动到图片的最低端，保留（TitleBar+StatusBar）的高度
         ViewGroup.LayoutParams params = binding.ivTitleHeadBg.getLayoutParams();
         ViewGroup.MarginLayoutParams ivTitleHeadBgParams = (ViewGroup.MarginLayoutParams) binding.ivTitleHeadBg.getLayoutParams();
         int marginTop = params.height - headerBgHeight;
@@ -248,7 +242,7 @@ public class MovieDetailActivity extends AppCompatActivity {
             layoutParams.setMargins(0, -StatusBarUtil.getStatusBarHeight(this), 0, 0);
         }
 
-        ViewGroup.LayoutParams imgItemBgparams = binding.include.imgItemBg.getLayoutParams();
+        ViewGroup.LayoutParams imgItemBgparams = Objects.requireNonNull(binding.include.imgItemBg).getLayoutParams();
         // 获得高斯图背景的高度
         imageBgHeight = imgItemBgparams.height;
 
@@ -335,9 +329,8 @@ public class MovieDetailActivity extends AppCompatActivity {
     public static void start(Activity context, SubjectsBean positionData, ImageView imageView) {
         Intent intent = new Intent(context, MovieDetailActivity.class);
         intent.putExtra("bean", positionData);
-        ActivityOptionsCompat options =
-                ActivityOptionsCompat.makeSceneTransitionAnimation(context,
-                        imageView, CommonUtils.getString(R.string.transition_movie_img));//与xml文件对应
+        // 与xml文件对应
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(context, imageView, CommonUtils.getString(R.string.transition_movie_img));
         ActivityCompat.startActivity(context, intent, options.toBundle());
     }
 }

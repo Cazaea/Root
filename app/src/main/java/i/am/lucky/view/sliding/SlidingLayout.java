@@ -19,11 +19,11 @@ import i.am.lucky.R;
  */
 public class SlidingLayout extends FrameLayout{
 
-    private int mTouchSlop;//系统允许最小的滑动判断值
+    private int mTouchSlop;// 系统允许最小的滑动判断值
     private int mBackgroundViewLayoutId = 0;
 
-    private View mBackgroundView;//背景View
-    private View mTargetView;//正面View
+    private View mBackgroundView;// 背景View
+    private View mTargetView;// 正面View
 
     private boolean mIsBeingDragged;
     private float mInitialDownY;
@@ -31,7 +31,7 @@ public class SlidingLayout extends FrameLayout{
     private float mLastMotionY;
     private int mActivePointerId = INVALID_POINTER;
 
-    private float mSlidingOffset = 0.5F;//滑动阻力系数
+    private float mSlidingOffset = 0.5F;// 滑动阻力系数
 
     private static final int RESET_DURATION = 200;
     private static final int SMOOTH_DURATION = 1000;
@@ -61,10 +61,10 @@ public class SlidingLayout extends FrameLayout{
     private OnTouchListener mDelegateTouchListener;
 
     public interface SlidingListener{
-        //不能操作繁重的任务在这里
-        public void onSlidingOffset(View view, float delta);
-        public void onSlidingStateChange(View view, int state);
-        public void onSlidingChangePointer(View view, int pointerId);
+        // 不能操作繁重的任务在这里
+        void onSlidingOffset(View view, float delta);
+        void onSlidingStateChange(View view, int state);
+        void onSlidingChangePointer(View view, int pointerId);
     }
 
     public SlidingLayout(Context context) {
@@ -313,7 +313,7 @@ public class SlidingLayout extends FrameLayout{
                 float delta = 0.0f;
                 float movemment = 0.0f;
                 if(mSlidingPointerMode == SLIDING_POINTER_MODE_MORE) {
-                    //homhom:it's different betweenn more than one pointer
+                    // homhom:it's different between more than one pointer
                     int activePointerId = MotionEventCompat.getPointerId(event, event.getPointerCount() - 1);
                     if (mActivePointerId != activePointerId) {
                         //change pointer
@@ -327,14 +327,14 @@ public class SlidingLayout extends FrameLayout{
                         }
                     }
 
-                    //pointer delta
+                    // pointer delta
 //                    delta = getInstrument().getTranslationY(mTargetView)
 //                            + ((getMotionEventY(event, mActivePointerId) - mLastMotionY))
 //                            / mSlidingOffset;
 
                     delta = getMotionEventY(event, mActivePointerId) - mLastMotionY;
 
-                    //滑动阻力计算
+                    // 滑动阻力计算
 //                    float tempOffset = getInstrument().getTranslationY(mTargetView)
 //                            + delta;
 
@@ -346,13 +346,13 @@ public class SlidingLayout extends FrameLayout{
 
                     mLastMotionY = getMotionEventY(event, mActivePointerId);
 
-                    //used for judge which side move to
+                    // used for judge which side move to
                     movemment = getMotionEventY(event, mActivePointerId) - mInitialMotionY;
                 }else {
                     float tempOffset = 1 - Math.abs(getInstrument().getTranslationY(mTargetView) / mTargetView.getMeasuredHeight());
 
                     delta = (event.getY() - mInitialMotionY) * mSlidingOffset * tempOffset;
-                    //used for judge which side move to
+                    // used for judge which side move to
                     movemment = event.getY() - mInitialMotionY;
                 }
 
@@ -364,16 +364,16 @@ public class SlidingLayout extends FrameLayout{
                         break;
                     case SLIDING_MODE_TOP:
                         if(movemment >= 0 || distance > 0){
-                            //向下滑动
+                            // 向下滑动
                             if(delta < 0 ){
-                                //如果还往上滑，就让它归零
+                                // 如果还往上滑，就让它归零
                                 delta = 0;
                             }
 
                             if(mSlidingTopMaxDistance == SLIDING_DISTANCE_UNDEFINED || delta < mSlidingTopMaxDistance){
-                                //滑动范围内 for todo
+                                // 滑动范围内 for todo
                             }else{
-                                //超过滑动范围
+                                // 超过滑动范围
                                 delta = mSlidingTopMaxDistance;
                             }
 
@@ -382,9 +382,9 @@ public class SlidingLayout extends FrameLayout{
                         break;
                     case SLIDING_MODE_BOTTOM:
                         if(movemment <= 0 || distance < 0){
-                            //向上滑动
+                            // 向上滑动
                             if(delta > 0 ){
-                                //如果还往下滑，就让它归零
+                                // 如果还往下滑，就让它归零
                                 delta = 0;
                             }
                             getInstrument().slidingByDelta(mTargetView, delta);

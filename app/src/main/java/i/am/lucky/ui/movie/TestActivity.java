@@ -7,6 +7,7 @@ import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,10 +29,12 @@ import i.am.lucky.view.test.StatusBarUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import jp.wasabeef.glide.transformations.BlurTransformation;
 
 /**
+ * （已使用：{@link OneMovieDetailActivity} 替代）
  * 第二种电影详情页
  */
 public class TestActivity extends AppCompatActivity {
@@ -100,7 +103,7 @@ public class TestActivity extends AppCompatActivity {
         binding.xrecyclerTest.setLayoutManager(layoutManager);
         binding.xrecyclerTest.setAdapter(mMyAdapter);
 
-        // toolbar 的高
+        // Toolbar 的高
         int toolbarHeight = mToolbar.getLayoutParams().height;
         Log.i(TAG, "toolbar height:" + toolbarHeight);
         final int headerBgHeight = toolbarHeight + getStatusBarHeight(this);
@@ -115,17 +118,17 @@ public class TestActivity extends AppCompatActivity {
 
         binding.xrecyclerTest.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
             }
 
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 View headerView = null;
 
                 LinearLayoutManager manager = (LinearLayoutManager) recyclerView.getLayoutManager();
-                int firstVisibleItem = manager.findFirstVisibleItemPosition();
+                int firstVisibleItem = Objects.requireNonNull(manager).findFirstVisibleItemPosition();
                 if (firstVisibleItem == 0) {
                     headerView = recyclerView.getChildAt(firstVisibleItem);
                 }
@@ -133,7 +136,7 @@ public class TestActivity extends AppCompatActivity {
                     return;
                 }
 
-                // 从头部高斯图底部到titlebar底部开始就设置不透明
+                // 从头部高斯图底部到TitleBar底部开始就设置不透明
                 float alpha = Math.abs(headerView.getTop()) * 1.0f / (headerView.getHeight() - headerBgHeight);
                 Log.e(TAG, "alpha:" + alpha + "top :" + headerView.getTop() + " height: " + (headerView.getHeight() - 2 * headerBgHeight));
 

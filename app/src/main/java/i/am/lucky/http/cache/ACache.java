@@ -43,6 +43,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -225,8 +226,7 @@ public class ACache {
 	public JSONObject getAsJSONObject(String key) {
 		String JSONString = getAsString(key);
 		try {
-			JSONObject obj = new JSONObject(JSONString);
-			return obj;
+			return new JSONObject(JSONString);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -271,8 +271,7 @@ public class ACache {
 	public JSONArray getAsJSONArray(String key) {
 		String JSONString = getAsString(key);
 		try {
-			JSONArray obj = new JSONArray(JSONString);
-			return obj;
+			return new JSONArray(JSONString);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -405,8 +404,9 @@ public class ACache {
 			e.printStackTrace();
 		} finally {
 			try {
-				oos.close();
-			} catch (IOException e) {
+				Objects.requireNonNull(oos).close();
+			} catch (IOException ignored) {
+				ignored.printStackTrace();
 			}
 		}
 	}
@@ -425,8 +425,7 @@ public class ACache {
 			try {
 				bais = new ByteArrayInputStream(data);
 				ois = new ObjectInputStream(bais);
-				Object reObject = ois.readObject();
-				return reObject;
+				return ois.readObject();
 			} catch (Exception e) {
 				e.printStackTrace();
 				return null;
@@ -590,24 +589,21 @@ public class ACache {
 		 * 计算 cacheSize和cacheCount
 		 */
 		private void calculateCacheSizeAndCacheCount() {
-			new Thread(new Runnable() {
-				@Override
-				public void run() {
-					int size = 0;
-					int count = 0;
-					File[] cachedFiles = cacheDir.listFiles();
-					if (cachedFiles != null) {
-						for (File cachedFile : cachedFiles) {
-							size += calculateSize(cachedFile);
-							count += 1;
-							lastUsageDates.put(cachedFile,
-									cachedFile.lastModified());
-						}
-						cacheSize.set(size);
-						cacheCount.set(count);
-					}
-				}
-			}).start();
+			new Thread(() -> {
+                int size = 0;
+                int count = 0;
+                File[] cachedFiles = cacheDir.listFiles();
+                if (cachedFiles != null) {
+                    for (File cachedFile : cachedFiles) {
+                        size += calculateSize(cachedFile);
+                        count += 1;
+                        lastUsageDates.put(cachedFile,
+                                cachedFile.lastModified());
+                    }
+                    cacheSize.set(size);
+                    cacheCount.set(count);
+                }
+            }).start();
 		}
 
 		private void put(File file) {
@@ -690,7 +686,7 @@ public class ACache {
 				}
 			}
 
-			long fileSize = calculateSize(mostLongUsedFile);
+			long fileSize = calculateSize(Objects.requireNonNull(mostLongUsedFile));
 			if (mostLongUsedFile.delete()) {
 				lastUsageDates.remove(mostLongUsedFile);
 			}
@@ -807,9 +803,9 @@ public class ACache {
 		private static final char mSeparator = ' ';
 
 		private static String createDateInfo(int second) {
-			String currentTime = System.currentTimeMillis() + "";
+			StringBuilder currentTime = new StringBuilder(System.currentTimeMillis() + "");
 			while (currentTime.length() < 13) {
-				currentTime = "0" + currentTime;
+				currentTime.insert(0, "0");
 			}
 			return currentTime + "-" + second + mSeparator;
 		}

@@ -16,6 +16,7 @@ import i.am.lucky.utils.SPUtils;
 import i.am.lucky.utils.ToastUtil;
 import i.am.lucky.viewmodel.gank.CustomNavigator;
 import i.am.lucky.viewmodel.gank.CustomViewModel;
+
 import i.am.lucky.recycler.XRecyclerView;
 
 import static i.am.lucky.app.Constants.GANK_CALA;

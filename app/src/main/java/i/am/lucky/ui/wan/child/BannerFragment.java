@@ -22,10 +22,11 @@ import i.am.lucky.utils.GlideImageLoader;
 import i.am.lucky.view.webview.WebViewActivity;
 import i.am.lucky.viewmodel.wan.WanAndroidListViewModel;
 import i.am.lucky.viewmodel.wan.WanNavigator;
-import i.am.lucky.recycler.XRecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import i.am.lucky.recycler.XRecyclerView;
 
 /**
  * @author Cazaea
@@ -188,12 +189,7 @@ public class BannerFragment extends BaseFragment<FragmentWanAndroidBinding> impl
         }
 
         bindingView.srlBook.setRefreshing(true);
-        bindingView.srlBook.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                loadCustomData();
-            }
-        }, 500);
+        bindingView.srlBook.postDelayed(this::loadCustomData, 500);
     }
 
     @Override

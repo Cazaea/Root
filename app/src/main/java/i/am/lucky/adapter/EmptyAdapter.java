@@ -1,5 +1,6 @@
 package i.am.lucky.adapter;
 
+import android.support.annotation.NonNull;
 import android.view.ViewGroup;
 
 import i.am.lucky.R;
@@ -12,8 +13,9 @@ import i.am.lucky.databinding.ItemEmptyBinding;
  */
 
 public class EmptyAdapter extends BaseRecyclerViewAdapter<String> {
+    @NonNull
     @Override
-    public BaseRecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public BaseRecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new ViewHolder(parent, R.layout.item_empty);
     }
 

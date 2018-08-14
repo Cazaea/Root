@@ -1,5 +1,6 @@
 package i.am.lucky.ui.menu;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
@@ -21,6 +22,7 @@ import i.am.lucky.view.webview.WebViewActivity;
  */
 public class NavAboutActivity extends BaseActivity<ActivityNavAboutBinding> {
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -1,6 +1,7 @@
 package i.am.lucky.adapter;
 
 import android.databinding.DataBindingUtil;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import i.am.lucky.databinding.ActivityMovieHeaderBinding;
 import i.am.lucky.view.statusbar.StatusBarUtil;
 
 import java.util.List;
+import java.util.Objects;
 
 
 /**
@@ -32,8 +34,9 @@ public class MovieDetailPersonAdapter extends RecyclerView.Adapter {
     private ImageView mHeaderView;
     private SubjectsBean subjectsBean;
 
+    @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == TYPE_CONTENT) {
             return new MyViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_movie_detail, null));
         } else {
@@ -56,7 +59,7 @@ public class MovieDetailPersonAdapter extends RecyclerView.Adapter {
             MyViewHolder myViewHolder = (MyViewHolder) holder;
             myViewHolder.mTextView.setText(mData.get(position - 1));
         } else {
-            Log.i("zhouwei", "初始化。。。。。");
+            Log.i("Cazaea", "初始化。。。。。");
             mHeaderView = ((HeaderViewHolder) holder).headerImage;
         }
     }
@@ -87,7 +90,7 @@ public class MovieDetailPersonAdapter extends RecyclerView.Adapter {
             super(itemView);
             ActivityMovieHeaderBinding binding = DataBindingUtil.getBinding(itemView);
             // 绑定数据
-            binding.setSubjectsBean(subjectsBean);
+            Objects.requireNonNull(binding).setSubjectsBean(subjectsBean);
 //            ImgLoadUtil.displayGaussian(itemView.getContext(), subjectsBean.getImages().getLarge(), binding.imgItemBg);
 //            ImgLoadUtil.getInstance().displayEspImage(itemView.getContext(), subjectsBean.getImages().getLarge(), binding.ivOnePhoto);
 

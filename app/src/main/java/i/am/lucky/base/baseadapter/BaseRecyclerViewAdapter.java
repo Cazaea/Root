@@ -1,12 +1,11 @@
 package i.am.lucky.base.baseadapter;
 
+import android.annotation.SuppressLint;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import i.am.lucky.utils.PerfectClickListener;
 
 /**
  * Created by Cazaea on 2016/11/25
@@ -18,23 +17,28 @@ public abstract class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<Ba
     protected OnItemLongClickListener<T> onItemLongClickListener;
 
     @Override
-    public void onBindViewHolder(BaseRecyclerViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull BaseRecyclerViewHolder holder, @SuppressLint("RecyclerView") final int position) {
         holder.onBaseBindViewHolder(data.get(position), position);
 
-        holder.itemView.setOnClickListener(new PerfectClickListener() {
-            @Override
-            protected void onNoDoubleClick(View v) {
-                if (listener != null) {
-                    listener.onClick(data.get(position), position);
-                }
-            }
-        });
+        // TODO 之前注释掉
+//        holder.itemView.setOnClickListener(new PerfectClickListener() {
+//            @Override
+//            protected void onNoDoubleClick(View v) {
+//                if (listener != null) {
+//                    listener.onClick(data.get(position), position);
+//                }
+//            }
+//        });
 
     }
 
     @Override
     public int getItemCount() {
         return data.size();
+    }
+
+    public List<T> getData() {
+        return data;
     }
 
     public void addAll(List<T> data) {
@@ -63,11 +67,6 @@ public abstract class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<Ba
 
     public void setOnItemClickListener(OnItemClickListener<T> listener) {
         this.listener = listener;
-    }
-
-
-    public List<T> getData() {
-        return data;
     }
 
     public void setOnItemLongClickListener(OnItemLongClickListener<T> onItemLongClickListener) {

@@ -2,6 +2,7 @@ package i.am.lucky.adapter;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -27,8 +28,9 @@ public class DouBanTopAdapter extends BaseRecyclerViewAdapter<SubjectsBean> {
         this.activity = activity;
     }
 
+    @NonNull
     @Override
-    public BaseRecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public BaseRecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new ViewHolder(parent, R.layout.item_douban_top);
     }
 
@@ -51,18 +53,10 @@ public class DouBanTopAdapter extends BaseRecyclerViewAdapter<SubjectsBean> {
                     OneMovieDetailActivity.start(activity, bean, binding.ivTopPhoto);
                 }
             });
-            binding.llItemTop.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    String title = "Top" + (position + 1) + ": " + bean.getTitle();
-                    DialogBuild.show(v, title, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            OneMovieDetailActivity.start(activity, bean, binding.ivTopPhoto);
-                        }
-                    });
-                    return false;
-                }
+            binding.llItemTop.setOnLongClickListener(v -> {
+                String title = "Top" + (position + 1) + ": " + bean.getTitle();
+                DialogBuild.show(v, title, (dialog, which) -> OneMovieDetailActivity.start(activity, bean, binding.ivTopPhoto));
+                return false;
             });
         }
     }

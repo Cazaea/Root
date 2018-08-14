@@ -1,5 +1,6 @@
 package i.am.lucky.base;
 
+import android.annotation.SuppressLint;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.graphics.drawable.AnimationDrawable;
@@ -26,6 +27,7 @@ import rx.subscriptions.CompositeSubscription;
 /**
  * Created by Cazaea on 16/12/10.
  */
+@SuppressLint("Registered")
 public class BaseActivity<SV extends ViewDataBinding> extends AppCompatActivity {
 
     // 布局view

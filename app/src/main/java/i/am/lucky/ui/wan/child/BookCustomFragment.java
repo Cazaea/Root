@@ -3,6 +3,7 @@ package i.am.lucky.ui.wan.child;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
@@ -23,6 +24,9 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+/**
+ * 已废弃，使用{@link BookListFragment}，替代
+ */
 public class BookCustomFragment extends BaseFragment<FragmentBookCustomBinding> {
 
     private static final String TYPE = "param1";
@@ -69,23 +73,16 @@ public class BookCustomFragment extends BaseFragment<FragmentBookCustomBinding> 
         super.onActivityCreated(savedInstanceState);
         showContentView();
         bindingView.srlBook.setColorSchemeColors(CommonUtils.getColor(R.color.colorDefaultTheme));
-        bindingView.srlBook.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                DebugUtil.error("-----onRefresh");
+        bindingView.srlBook.setOnRefreshListener(() -> {
+            DebugUtil.error("-----onRefresh");
 //                listTag= Arrays.asList(BookApiUtils.getApiTag(position));
 //                String tag=BookApiUtils.getRandomTAG(listTag);
 //                doubanBookPresenter.searchBookByTag(BookReadingFragment.this,tag,false);
-                bindingView.srlBook.postDelayed(new Runnable() {
+            bindingView.srlBook.postDelayed(() -> {
+                mStart = 0;
+                loadCustomData();
+            }, 1000);
 
-                    @Override
-                    public void run() {
-                        mStart = 0;
-                        loadCustomData();
-                    }
-                }, 1000);
-
-            }
         });
 
 //        mBookAdapter = new BookAdapter(getActivity());
@@ -116,12 +113,7 @@ public class BookCustomFragment extends BaseFragment<FragmentBookCustomBinding> 
         }
 
         bindingView.srlBook.setRefreshing(true);
-        bindingView.srlBook.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                loadCustomData();
-            }
-        }, 500);
+        bindingView.srlBook.postDelayed(() -> loadCustomData(), 500);
         DebugUtil.error("-----setRefreshing");
     }
 
@@ -157,10 +149,10 @@ public class BookCustomFragment extends BaseFragment<FragmentBookCustomBinding> 
 
                                 if (mBookAdapter == null) {
                                     mBookAdapter = new BookAdapter(getActivity());
+                                    bindingView.xrvBook.setAdapter(mBookAdapter);
                                 }
                                 mBookAdapter.setList(bookBean.getBooks());
                                 mBookAdapter.notifyDataSetChanged();
-                                bindingView.xrvBook.setAdapter(mBookAdapter);
 
 
 //                                //构造器中，第一个参数表示列数或者行数，第二个参数表示滑动方向,瀑布流
@@ -189,7 +181,7 @@ public class BookCustomFragment extends BaseFragment<FragmentBookCustomBinding> 
             int lastVisibleItem;
 
             @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     lastVisibleItem = mLayoutManager.findLastVisibleItemPosition();
@@ -213,21 +205,18 @@ public class BookCustomFragment extends BaseFragment<FragmentBookCustomBinding> 
                         mBookAdapter.updateLoadStatus(BookAdapter.LOAD_MORE);
 
                         //new Handler().postDelayed(() -> getBeforeNews(time), 1000);
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
+                        new Handler().postDelayed(() -> {
 //                                String tag= BookApiUtils.getRandomTAG(listTag);
 //                                doubanBookPresenter.searchBookByTag(BookReadingFragment.this,tag,true);
-                                mStart += mCount;
-                                loadCustomData();
-                            }
+                            mStart += mCount;
+                            loadCustomData();
                         }, 1000);
                     }
                 }
             }
 
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 lastVisibleItem = mLayoutManager.findLastVisibleItemPosition();
 

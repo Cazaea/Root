@@ -4,10 +4,11 @@ import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 
 import com.android.databinding.library.baseAdapters.BR;
-import i.am.lucky.http.ParamNames;
 
 import java.io.Serializable;
 import java.util.List;
+
+import i.am.lucky.http.ParamNames;
 
 /**
  * Created by Cazaea on 2016/12/15.

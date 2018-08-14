@@ -4,6 +4,8 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import java.util.Objects;
+
 /**
  * 用于判断是不是联网状态
  *
@@ -20,7 +22,7 @@ public class CheckNetwork {
                 @SuppressWarnings("static-access")
                 ConnectivityManager cm = (ConnectivityManager) context
                         .getSystemService(context.CONNECTIVITY_SERVICE);
-                NetworkInfo info = cm.getActiveNetworkInfo();
+                NetworkInfo info = Objects.requireNonNull(cm).getActiveNetworkInfo();
                 return info != null && info.isConnected();
             }else{
                 /**如果context为空，就返回false，表示网络未连接*/
@@ -36,9 +38,8 @@ public class CheckNetwork {
 
     public static boolean isWifiConnected(Context context) {
         if (context != null) {
-            ConnectivityManager cm = (ConnectivityManager) context
-                    .getSystemService(context.CONNECTIVITY_SERVICE);
-            NetworkInfo info = cm.getActiveNetworkInfo();
+            ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo info = Objects.requireNonNull(cm).getActiveNetworkInfo();
             return info != null && (info.getType() == ConnectivityManager.TYPE_WIFI);
         } else {
             /**如果context为null就表示为未连接*/

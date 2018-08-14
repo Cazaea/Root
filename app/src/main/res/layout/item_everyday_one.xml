@@ -28,7 +28,7 @@
             android:layout_marginTop="3dp"
             android:ellipsize="end"
             android:maxLines="2"
-            android:paddingLeft="4dp"
+            android:paddingStart="4dp"
             android:paddingRight="4dp"
             android:text=""
             android:textColor="@color/colorContent"

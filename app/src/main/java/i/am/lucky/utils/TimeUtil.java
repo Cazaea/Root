@@ -1,5 +1,6 @@
 package i.am.lucky.utils;
 
+import android.annotation.SuppressLint;
 import android.text.format.Time;
 
 import java.text.ParseException;
@@ -7,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
 
 public class TimeUtil {
 
@@ -21,19 +23,21 @@ public class TimeUtil {
     /**
      * 实例化模板对象
      */
+    @SuppressLint("SimpleDateFormat")
     private static SimpleDateFormat sdf1 = new SimpleDateFormat(pat1);
+    @SuppressLint("SimpleDateFormat")
     private static SimpleDateFormat sdf2 = new SimpleDateFormat(pat2);
     private static long timeMilliseconds;
 
-    public static Long farmatTime(String string) {
+    public static Long formatTime(String string) {
         Date date = null;
         try {
-            SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            @SuppressLint("SimpleDateFormat") SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             date = Date(sf.parse(string));
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return date.getTime();
+        return Objects.requireNonNull(date).getTime();
     }
 
     public static Date Date(Date date) {
@@ -59,9 +63,7 @@ public class TimeUtil {
                 commitDate = commitDate.substring(0, 18);
             }
             if (commitDate.length() == 16) {
-                StringBuffer buffer = new StringBuffer(commitDate);
-                buffer.append(":00");
-                commitDate = buffer.toString();
+                commitDate = commitDate + ":00";
             }
             // 将给定的字符串中的日期提取出来
             date = sdf1.parse(commitDate);
@@ -85,41 +87,37 @@ public class TimeUtil {
         int yearMonth = Integer.valueOf(yearMonthDay.substring(5, 7));
         int yearDay = Integer.valueOf(yearMonthDay.substring(8, 10));
         if (yearMonth < 10 && yearDay < 10) {
-            yearMonthDay = yearMonthDay.substring(0, 5)
-                    + yearMonthDay.substring(6, 8) + yearMonthDay.substring(9);
+            yearMonthDay = yearMonthDay.substring(0, 5) + yearMonthDay.substring(6, 8) + yearMonthDay.substring(9);
         } else if (yearMonth < 10) {
-            yearMonthDay = yearMonthDay.substring(0, 5)
-                    + yearMonthDay.substring(6);
+            yearMonthDay = yearMonthDay.substring(0, 5) + yearMonthDay.substring(6);
         } else if (yearDay < 10) {
-            yearMonthDay = yearMonthDay.substring(0, 8)
-                    + yearMonthDay.substring(9);
+            yearMonthDay = yearMonthDay.substring(0, 8) + yearMonthDay.substring(9);
         }
         String str = " 00:00:00";
-        float currDay = farmatTime(currDate.substring(0, 10) + str);
-        float commitDay = farmatTime(commitDate.substring(0, 10) + str);
+        float currDay = formatTime(currDate.substring(0, 10) + str);
+        float commitDay = formatTime(commitDate.substring(0, 10) + str);
         int currYear = Integer.valueOf(currDate.substring(0, 4));
         int commitYear = Integer.valueOf(commitDate.substring(0, 4));
-        int flag = (int) (farmatTime(currDate) / 1000 - farmatTime(commitDate) / 1000);
+        int flag = (int) (formatTime(currDate) / 1000 - formatTime(commitDate) / 1000);
         String des = null;
         String hourMin = commitDate.substring(11, 16);
-        int temp = flag;
-        if (temp < 60) {
+        if (flag < 60) {
             System.out.println("A");
             if (commitDay < currDay) {
                 des = "昨天  " + hourMin;
             } else {
                 des = "刚刚";
             }
-        } else if (temp < 60 * 60) {
+        } else if (flag < 60 * 60) {
             System.out.println("B");
             if (commitDay < currDay) {
                 des = "昨天  " + hourMin;
             } else {
-                des = temp / 60 + "分钟前";
+                des = flag / 60 + "分钟前";
             }
-        } else if (temp < 60 * 60 * 24) {
+        } else if (flag < 60 * 60 * 24) {
             System.out.println("C");
-            int hour = temp / (60 * 60);
+            int hour = flag / (60 * 60);
             if (commitDay < currDay) {
                 des = "昨天  " + hourMin;
             } else {
@@ -129,14 +127,14 @@ public class TimeUtil {
                     des = hourMin;
                 }
             }
-        } else if (temp < (60 * 60 * 24 * 2)) {
+        } else if (flag < (60 * 60 * 24 * 2)) {
             System.out.println("D");
             if (nowDate - commit == 1) {
                 des = "昨天  " + hourMin;
             } else {
                 des = "前天  " + hourMin;
             }
-        } else if (temp < 60 * 60 * 60 * 3) {
+        } else if (flag < 60 * 60 * 60 * 3) {
             System.out.println("E");
             if (nowDate - commit == 2) {
                 des = "前天  " + hourMin;
@@ -148,15 +146,11 @@ public class TimeUtil {
                 }
             }
         } else {
-            System.out.println("F");
             if (commitYear < currYear) {
                 des = yearMonthDay + hourMin;
             } else {
                 des = monthDay + hourMin;
             }
-        }
-        if (des == null) {
-            des = commitDate;
         }
         return des;
     }
@@ -207,8 +201,7 @@ public class TimeUtil {
             long longHour = timeDifferent / 3600000;
             int hour = (int) (longHour % 100);
             return hour + "小时之前";
-        }
-        if (timeDifferent >= l) {
+        } else {
             String currYear = currDate.substring(0, 4);
             String year = time.substring(0, 4);
             if (!year.equals(currYear)) {
@@ -216,7 +209,6 @@ public class TimeUtil {
             }
             return time.substring(5, 10);
         }
-        return time;
     }
 
 
@@ -228,7 +220,7 @@ public class TimeUtil {
      * @return
      */
     public static String getTranslateTime(String time) {
-        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         // 在主页面中设置当天时间
         Date nowTime = new Date();
         String currDate = sdf1.format(nowTime);
@@ -262,8 +254,7 @@ public class TimeUtil {
             long longHour = timeDifferent / 3600000;
             int hour = (int) (longHour % 100);
             return hour + "小时之前";
-        }
-        if (timeDifferent >= l) {
+        } else {
             String currYear = currDate.substring(0, 4);
             String year = time.substring(0, 4);
             if (!year.equals(currYear)) {
@@ -271,16 +262,14 @@ public class TimeUtil {
             }
             return time.substring(5, 10);
         }
-        return time;
     }
 
     /**
      * 获取当前日期
      */
     public static String getData() {
-        SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String date = sDateFormat.format(new Date());
-        return date;
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        return sDateFormat.format(new Date());
     }
 
     /**
@@ -317,9 +306,8 @@ public class TimeUtil {
 
     public static String formatDataTime(long timeMilliseconds) {
         try {
-            SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            String date = sDateFormat.format(timeMilliseconds);
-            return date;
+            @SuppressLint("SimpleDateFormat") SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            return sDateFormat.format(timeMilliseconds);
         } catch (Exception e) {
             return getData();
         }
@@ -327,11 +315,12 @@ public class TimeUtil {
 
 
     public static Date getDate() {
-        SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String date = sDateFormat.format(new Date());
         try {
             return sDateFormat.parse(date);
-        } catch (ParseException e) {
+        } catch (ParseException ignored) {
+            ignored.printStackTrace();
         }
         return null;
     }
@@ -340,21 +329,17 @@ public class TimeUtil {
      * 比较日期与当前日期的大小
      */
     public static boolean DateCompare(String s1) throws ParseException {
-        //设定时间的模板
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        //得到指定模范的时间
+        // 设定时间的模板
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        // 得到指定模范的时间
         Date d1 = sdf.parse(s1);
         Date d2 = sdf.parse(getData());
-        //比较
-        if (((d1.getTime() - d2.getTime()) / (24 * 3600 * 1000)) >= 1) {
-            return true;
-        } else {
-            return false;
-        }
+        // 比较
+        return ((d1.getTime() - d2.getTime()) / (24 * 3600 * 1000)) >= 1;
     }
 
     public static boolean DateCompare(String data1, String data2) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         //得到指定模范的时间
         Date d1 = null;
         try {
@@ -369,15 +354,11 @@ public class TimeUtil {
             return true;
         }
         //比较
-        if (((d1.getTime() - d2.getTime()) / (24 * 3600 * 1000)) >= 1) {
-            return true;
-        } else {
-            return false;
-        }
+        return ((d1.getTime() - d2.getTime()) / (24 * 3600 * 1000)) >= 1;
     }
 
     public static String timeFormat(String time) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
         Date date = null;
         try {
             // 将给定的字符串中的日期提取出来
@@ -386,14 +367,14 @@ public class TimeUtil {
             DebugUtil.debug("--时间解析-->", "错误");
             return time;
         }
-        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         return sdf1.format(date);
     }
 
 
     public static String timeFormatStr(String time) {
         //
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
         Date date = null;
         try {
             // 将给定的字符串中的日期提取出来
@@ -402,14 +383,14 @@ public class TimeUtil {
             DebugUtil.debug("--时间解析-->", "错误");
             return time;
         }
-        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return sdf1.format(date);
     }
 
 
     public static String timeFormatYYYYMMDD(String time) {
         //
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
         Date date = null;
         try {
             // 将给定的字符串中的日期提取出来
@@ -418,7 +399,7 @@ public class TimeUtil {
             DebugUtil.debug("--时间解析-->", "错误");
             return time;
         }
-        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
         return sdf1.format(date);
     }
 }

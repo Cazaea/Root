@@ -71,18 +71,10 @@ public class RxBus {
      */
     public <T> Observable<T> toObservable(final int code, final Class<T> eventType) {
         return _bus.ofType(RxBusBaseMessage.class)
-                .filter(new Func1<RxBusBaseMessage,Boolean>() {
-                    @Override
-                    public Boolean call(RxBusBaseMessage o) {
-                        //过滤code和eventType都相同的事件
-                        return o.getCode() == code && eventType.isInstance(o.getObject());
-                    }
-                }).map(new Func1<RxBusBaseMessage,Object>() {
-                    @Override
-                    public Object call(RxBusBaseMessage o) {
-                        return o.getObject();
-                    }
-                }).cast(eventType);
+                .filter(o -> {
+                    // 过滤code和eventType都相同的事件
+                    return o.getCode() == code && eventType.isInstance(o.getObject());
+                }).map(RxBusBaseMessage::getObject).cast(eventType);
     }
     /**
      * 判断是否有订阅者

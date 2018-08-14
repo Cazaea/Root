@@ -18,11 +18,11 @@ import i.am.lucky.databinding.HeaderItemJokeBinding;
 import i.am.lucky.utils.CommonUtils;
 import i.am.lucky.viewmodel.wan.JokeViewModel;
 import i.am.lucky.viewmodel.wan.WanNavigator;
-import i.am.lucky.recycler.XRecyclerView;
 
 import java.util.List;
 import java.util.Random;
 
+import i.am.lucky.recycler.XRecyclerView;
 import jp.wasabeef.glide.transformations.BlurTransformation;
 
 /**
@@ -87,23 +87,18 @@ public class JokeFragment extends BaseFragment<FragmentWanAndroidBinding> implem
 
     private void initRefreshView() {
         bindingView.srlBook.setColorSchemeColors(CommonUtils.getColor(R.color.colorDefaultTheme));
-        bindingView.srlBook.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                bindingView.srlBook.postDelayed(() -> {
-                    bindingView.xrvBook.reset();
-                    if (isNhdz) {
-                        viewModel.setRefreshNH(true);
-                        viewModel.showNhdzList();
-                    } else {
-                        viewModel.setRefreshBK(true);
-                        viewModel.setPage(new Random().nextInt(100));
-                        viewModel.showQSBKList();
-                    }
-
-                }, 100);
+        bindingView.srlBook.setOnRefreshListener(() -> bindingView.srlBook.postDelayed(() -> {
+            bindingView.xrvBook.reset();
+            if (isNhdz) {
+                viewModel.setRefreshNH(true);
+                viewModel.showNhdzList();
+            } else {
+                viewModel.setRefreshBK(true);
+                viewModel.setPage(new Random().nextInt(100));
+                viewModel.showQSBKList();
             }
-        });
+
+        }, 100));
         bindingView.xrvBook.setLayoutManager(new LinearLayoutManager(getActivity()));
         bindingView.xrvBook.setPullRefreshEnabled(false);
         bindingView.xrvBook.clearHeader();
@@ -155,12 +150,9 @@ public class JokeFragment extends BaseFragment<FragmentWanAndroidBinding> implem
         }
 
         bindingView.srlBook.setRefreshing(true);
-        bindingView.srlBook.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                viewModel.setRefreshNH(true);
-                loadCustomData();
-            }
+        bindingView.srlBook.postDelayed(() -> {
+            viewModel.setRefreshNH(true);
+            loadCustomData();
         }, 100);
     }
 

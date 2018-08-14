@@ -1,6 +1,7 @@
 package i.am.lucky.view.test;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -44,8 +45,9 @@ public class RCVListAdapter extends RecyclerView.Adapter<RCVListAdapter.ItemHold
         header = v;
     }
 
+    @NonNull
     @Override
-    public ItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Log.d("RCVListAdapter", "onCreateViewHolder");
         if (viewType == TYPE_HEADER) {
             return new ItemHolder(header);
@@ -55,7 +57,7 @@ public class RCVListAdapter extends RecyclerView.Adapter<RCVListAdapter.ItemHold
     }
 
     @Override
-    public void onBindViewHolder(ItemHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ItemHolder holder, int position) {
 
     }
 

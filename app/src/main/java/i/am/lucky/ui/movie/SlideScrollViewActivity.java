@@ -1,5 +1,6 @@
 package i.am.lucky.ui.movie;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -34,6 +35,7 @@ import java.util.Arrays;
 import static i.am.lucky.view.statusbar.StatusBarUtil.getStatusBarHeight;
 
 /**
+ * （已使用：{@link OneMovieDetailActivity} 替代）
  * 暂时的电影详情页 2016-11-29
  */
 public class SlideScrollViewActivity extends AppCompatActivity {
@@ -85,6 +87,7 @@ public class SlideScrollViewActivity extends AppCompatActivity {
         binding.include.setSubjectsBean(positionData);
     }
 
+    @SuppressLint("SetTextI18n")
     private void setTitleBar() {
         setSupportActionBar(binding.titleToolBar);
         ActionBar actionBar = getSupportActionBar();
@@ -112,12 +115,7 @@ public class SlideScrollViewActivity extends AppCompatActivity {
 
     private void initScrollView() {
         discoverScrollView.setVisibility(View.VISIBLE);
-        discoverScrollView.setCallBack_scrollChanged(new CallBack_ScrollChanged() {
-            @Override
-            public void onScrollChanged(int scrolledY) {
-                scrollChangeHeader(scrolledY);
-            }
-        });
+        discoverScrollView.setCallBack_scrollChanged(this::scrollChangeHeader);
     }
 
     private void initRecyclerView() {
@@ -191,9 +189,8 @@ public class SlideScrollViewActivity extends AppCompatActivity {
     public static void start(Activity context, SubjectsBean positionData, ImageView imageView) {
         Intent intent = new Intent(context, SlideScrollViewActivity.class);
         intent.putExtra("bean", positionData);
-        ActivityOptionsCompat options =
-                ActivityOptionsCompat.makeSceneTransitionAnimation(context,
-                        imageView, CommonUtils.getString(R.string.transition_movie_img));//与xml文件对应
+        //与xml文件对应
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(context, imageView, CommonUtils.getString(R.string.transition_movie_img));
         ActivityCompat.startActivity(context, intent, options.toBundle());
     }
 

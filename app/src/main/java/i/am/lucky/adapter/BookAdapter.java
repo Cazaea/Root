@@ -2,6 +2,7 @@ package i.am.lucky.adapter;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -21,6 +22,7 @@ import i.am.lucky.utils.PerfectClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by Cazaea on 2016/12/15.
@@ -45,7 +47,6 @@ public class BookAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public BookAdapter(Context context) {
         this.context = (MainActivity) context;
         list = new ArrayList<>();
-
     }
 
     @Override
@@ -60,8 +61,9 @@ public class BookAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
     }
 
+    @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         switch (viewType) {
             case TYPE_HEADER_BOOK:
                 HeaderItemBookBinding mBindHeader = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.header_item_book, parent, false);
@@ -76,7 +78,7 @@ public class BookAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof HeaderViewHolder) {
             HeaderViewHolder headerViewHolder = (HeaderViewHolder) holder;
             headerViewHolder.bindItem();
@@ -102,7 +104,7 @@ public class BookAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
      * 处理 GridLayoutManager 添加头尾布局占满屏幕宽的情况
      */
     @Override
-    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
         RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
         if (manager instanceof GridLayoutManager) {
@@ -120,7 +122,7 @@ public class BookAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
      * 处理 StaggeredGridLayoutManager 添加头尾布局占满屏幕宽的情况
      */
     @Override
-    public void onViewAttachedToWindow(RecyclerView.ViewHolder holder) {
+    public void onViewAttachedToWindow(@NonNull RecyclerView.ViewHolder holder) {
         super.onViewAttachedToWindow(holder);
         ViewGroup.LayoutParams lp = holder.itemView.getLayoutParams();
         if (lp != null
@@ -158,7 +160,7 @@ public class BookAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         FooterViewHolder(View itemView) {
             super(itemView);
             mBindFooter = DataBindingUtil.getBinding(itemView);
-            mBindFooter.rlMore.setGravity(Gravity.CENTER);
+            Objects.requireNonNull(mBindFooter).rlMore.setGravity(Gravity.CENTER);
 //            LinearLayoutCompat.LayoutParams params = new LinearLayoutCompat.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ScreenUtils.dipToPx(context, 40));
 //            itemView.setLayoutParams(params);
         }
@@ -176,7 +178,6 @@ public class BookAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     itemView.setVisibility(View.VISIBLE);
                     break;
                 case LOAD_NONE:
-                    System.out.println("LOAD_NONE----");
                     mBindFooter.progress.setVisibility(View.GONE);
                     mBindFooter.tvLoadPrompt.setText("没有更多内容了");
                     break;
@@ -187,7 +188,6 @@ public class BookAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             }
         }
     }
-
 
     private class HeaderViewHolder extends RecyclerView.ViewHolder {
 
@@ -212,7 +212,6 @@ public class BookAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public int getLoadStatus() {
         return this.status;
     }
-
 
     private class BookViewHolder extends RecyclerView.ViewHolder {
 

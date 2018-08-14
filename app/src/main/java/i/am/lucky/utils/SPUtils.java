@@ -3,8 +3,8 @@ package i.am.lucky.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import i.am.lucky.app.RootApplication;
 import i.am.lucky.app.Constants;
+import i.am.lucky.app.RootApplication;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -124,7 +124,6 @@ public class SPUtils {
     /**
      * 存储List<String>
      *
-     * @param context
      * @param key     List<String>对应的key
      * @param strList 对应需要存储的List<String>
      */

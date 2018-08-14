@@ -1,5 +1,6 @@
 package i.am.lucky.ui.movie;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -22,6 +23,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+
+import java.util.Objects;
+
 import i.am.lucky.R;
 import i.am.lucky.bean.moviechild.SubjectsBean;
 import i.am.lucky.databinding.ActivitySlideShadeViewBinding;
@@ -37,6 +41,7 @@ import jp.wasabeef.glide.transformations.BlurTransformation;
 import static i.am.lucky.view.statusbar.StatusBarUtil.getStatusBarHeight;
 
 /**
+ * （已使用：{@link OneMovieDetailActivity} 替代）
  * 思路：
  * 1、透明状态栏（透明titlebar,使背景图上移）
  * 2、titlebar底部增加和背景一样的高斯模糊图，并上移图片的高度-titlebar的高度（为了使背景图的底部作为titlebar的背景）
@@ -61,13 +66,13 @@ public class SlideShadeViewActivity extends AppCompatActivity {
         }
         setData();
 
-        // toolbar 的高
+        // Toolbar 的高
         int toolbarHeight = binding.titleToolBar.getLayoutParams().height;
         Log.i(TAG, "toolbar height:" + toolbarHeight);
         final int headerBgHeight = toolbarHeight + getStatusBarHeight(this);
         Log.i(TAG, "headerBgHeight:" + headerBgHeight);
 
-        // 使背景图向上移动到图片的最低端，保留（titlebar+statusbar）的高度
+        // 使背景图向上移动到图片的最低端，保留（TitleBar+StatusBar）的高度
         ViewGroup.LayoutParams params = binding.ivTitleHeadBg.getLayoutParams();
         ViewGroup.MarginLayoutParams ivTitleHeadBgParams = (ViewGroup.MarginLayoutParams) binding.ivTitleHeadBg.getLayoutParams();
         int marginTop = params.height - headerBgHeight;
@@ -82,9 +87,9 @@ public class SlideShadeViewActivity extends AppCompatActivity {
             layoutParams.setMargins(0, -StatusBarUtil.getStatusBarHeight(this), 0, 0);
         }
 
-        ViewGroup.LayoutParams imgItemBgparams = binding.include.imgItemBg.getLayoutParams();
+        ViewGroup.LayoutParams imgItemBgParams = Objects.requireNonNull(binding.include.imgItemBg).getLayoutParams();
         // 获得高斯图背景的高度
-        imageBgHeight = imgItemBgparams.height;
+        imageBgHeight = imgItemBgParams.height;
 
         // 数据配置
         setTitleBar();
@@ -98,7 +103,7 @@ public class SlideShadeViewActivity extends AppCompatActivity {
 
 
     /**
-     * 加载titlebar背景
+     * 加载TitleBar背景
      */
     private void setData() {
         if (subjectsBean != null) {
@@ -128,6 +133,7 @@ public class SlideShadeViewActivity extends AppCompatActivity {
         binding.include.setSubjectsBean(positionData);
     }
 
+    @SuppressLint("SetTextI18n")
     private void setTitleBar() {
         setSupportActionBar(binding.titleToolBar);
         ActionBar actionBar = getSupportActionBar();
@@ -219,9 +225,8 @@ public class SlideShadeViewActivity extends AppCompatActivity {
     public static void start(Activity context, SubjectsBean positionData, ImageView imageView) {
         Intent intent = new Intent(context, SlideShadeViewActivity.class);
         intent.putExtra("bean", positionData);
-        ActivityOptionsCompat options =
-                ActivityOptionsCompat.makeSceneTransitionAnimation(context,
-                        imageView, CommonUtils.getString(R.string.transition_movie_img));//与xml文件对应
+        // 与xml文件对应
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(context, imageView, CommonUtils.getString(R.string.transition_movie_img));
         ActivityCompat.startActivity(context, intent, options.toBundle());
     }
 }

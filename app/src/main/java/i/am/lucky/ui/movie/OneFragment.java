@@ -20,6 +20,9 @@ import i.am.lucky.utils.SPUtils;
 import i.am.lucky.utils.TimeUtil;
 import i.am.lucky.viewmodel.movie.OneViewModel;
 
+/**
+ * @author Cazaea
+ */
 public class OneFragment extends BaseFragment<FragmentOneBinding> {
 
     // 初始化完成后加载数据
@@ -48,7 +51,6 @@ public class OneFragment extends BaseFragment<FragmentOneBinding> {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        showContentView();
         initRecyclerView();
         aCache = ACache.get(getActivity());
         mHotMovieBean = (HotMovieBean) aCache.getAsObject(Constants.ONE_HOT_MOVIE);
@@ -88,13 +90,11 @@ public class OneFragment extends BaseFragment<FragmentOneBinding> {
             if (mHotMovieBean == null && !mIsLoading) {
                 postDelayLoad();
             } else {
-                bindingView.listOne.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        synchronized (this) {
-                            setAdapter(mHotMovieBean);
-                            showContentView();
-                        }
+                // TODO 强行使用Lambda表达式
+                bindingView.listOne.postDelayed(() -> {
+                    synchronized (this) {
+                        setAdapter(mHotMovieBean);
+                        showContentView();
                     }
                 }, 150);
             }
@@ -129,7 +129,6 @@ public class OneFragment extends BaseFragment<FragmentOneBinding> {
     private void setAdapter(HotMovieBean hotMovieBean) {
         oneAdapter.clear();
         oneAdapter.addAll(hotMovieBean.getSubjects());
-        bindingView.listOne.setAdapter(oneAdapter);
         oneAdapter.notifyDataSetChanged();
 
         isFirst = false;
@@ -150,6 +149,7 @@ public class OneFragment extends BaseFragment<FragmentOneBinding> {
         oneBinding.setView(this);
         bindingView.listOne.addHeaderView(oneBinding.getRoot());
         oneAdapter = new OneAdapter(activity);
+        bindingView.listOne.setAdapter(oneAdapter);
     }
 
     /**
@@ -160,12 +160,7 @@ public class OneFragment extends BaseFragment<FragmentOneBinding> {
         synchronized (this) {
             if (!mIsLoading) {
                 mIsLoading = true;
-                bindingView.listOne.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        loadHotMovie();
-                    }
-                }, 150);
+                bindingView.listOne.postDelayed(this::loadHotMovie, 150);
             }
         }
     }

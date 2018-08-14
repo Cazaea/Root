@@ -12,9 +12,10 @@ import i.am.lucky.databinding.FragmentWelfareBinding;
 import i.am.lucky.view.viewbigimage.ViewBigImageActivity;
 import i.am.lucky.viewmodel.gank.WelfareNavigator;
 import i.am.lucky.viewmodel.gank.WelfareViewModel;
-import i.am.lucky.recycler.XRecyclerView;
 
 import java.util.ArrayList;
+
+import i.am.lucky.recycler.XRecyclerView;
 
 /**
  * 福利

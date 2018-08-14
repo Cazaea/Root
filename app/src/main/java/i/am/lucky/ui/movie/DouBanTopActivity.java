@@ -14,6 +14,7 @@ import i.am.lucky.bean.HotMovieBean;
 import i.am.lucky.databinding.ActivityDoubanTopBinding;
 import i.am.lucky.viewmodel.movie.DouBanTopViewModel;
 import i.am.lucky.viewmodel.movie.OnMovieLoadListener;
+
 import i.am.lucky.recycler.XRecyclerView;
 
 /**

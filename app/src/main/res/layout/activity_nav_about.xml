@@ -92,7 +92,7 @@
                 android:layout_marginTop="20dp"
                 android:gravity="center_horizontal"
                 android:lineSpacingExtra="2dp"
-                android:paddingLeft="20dp"
+                android:paddingStart="20dp"
                 android:paddingRight="20dp"
                 android:text="很高兴您能使用，如感到满意请Star一下吧，我们将继续迭代，增加更多功能，O(∩_∩)O ~"
                 android:textColor="@color/colorSubtitle"

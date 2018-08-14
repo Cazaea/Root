@@ -3,12 +3,13 @@ package i.am.lucky.bean.book;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 
-import i.am.lucky.http.ParamNames;
 import i.am.lucky.BR;
 import i.am.lucky.bean.moviechild.ImagesBean;
 
 import java.io.Serializable;
 import java.util.List;
+
+import i.am.lucky.http.ParamNames;
 
 /**
  * Created by Cazaea on 2016/12/15.
@@ -69,16 +70,10 @@ public class BooksBean extends BaseObservable implements Serializable{
     private String id;
     @ParamNames("publisher")
     private String publisher;
-    @ParamNames("isbn10")
-    private String isbn10;
-    @ParamNames("isbn13")
-    private String isbn13;
     @ParamNames("title")
     private String title;
     @ParamNames("url")
     private String url;
-    @ParamNames("alt_title")
-    private String alt_title;
     @ParamNames("author_intro")
     private String author_intro;
     @ParamNames("summary")
@@ -226,16 +221,6 @@ public class BooksBean extends BaseObservable implements Serializable{
     }
 
     @Bindable
-    public String getOrigin_title() {
-        return origin_title;
-    }
-
-    public void setOrigin_title(String origin_title) {
-        this.origin_title = origin_title;
-        notifyPropertyChanged(BR.origin_title);
-    }
-
-    @Bindable
     public String getImage() {
         return image;
     }
@@ -243,36 +228,6 @@ public class BooksBean extends BaseObservable implements Serializable{
     public void setImage(String image) {
         this.image = image;
         notifyPropertyChanged(BR.image);
-    }
-
-    @Bindable
-    public String getBinding() {
-        return binding;
-    }
-
-    public void setBinding(String binding) {
-        this.binding = binding;
-        notifyPropertyChanged(BR.binding);
-    }
-
-    @Bindable
-    public String getCatalog() {
-        return catalog;
-    }
-
-    public void setCatalog(String catalog) {
-        this.catalog = catalog;
-        notifyPropertyChanged(BR.catalog);
-    }
-
-    @Bindable
-    public String getPages() {
-        return pages;
-    }
-
-    public void setPages(String pages) {
-        this.pages = pages;
-        notifyPropertyChanged(BR.pages);
     }
 
     @Bindable
@@ -316,26 +271,6 @@ public class BooksBean extends BaseObservable implements Serializable{
     }
 
     @Bindable
-    public String getIsbn10() {
-        return isbn10;
-    }
-
-    public void setIsbn10(String isbn10) {
-        this.isbn10 = isbn10;
-        notifyPropertyChanged(BR.isbn10);
-    }
-
-    @Bindable
-    public String getIsbn13() {
-        return isbn13;
-    }
-
-    public void setIsbn13(String isbn13) {
-        this.isbn13 = isbn13;
-        notifyPropertyChanged(BR.isbn13);
-    }
-
-    @Bindable
     public String getTitle() {
         return title;
     }
@@ -356,46 +291,6 @@ public class BooksBean extends BaseObservable implements Serializable{
     }
 
     @Bindable
-    public String getAlt_title() {
-        return alt_title;
-    }
-
-    public void setAlt_title(String alt_title) {
-        this.alt_title = alt_title;
-        notifyPropertyChanged(BR.alt_title);
-    }
-
-    @Bindable
-    public String getAuthor_intro() {
-        return author_intro;
-    }
-
-    public void setAuthor_intro(String author_intro) {
-        this.author_intro = author_intro;
-        notifyPropertyChanged(BR.author_intro);
-    }
-
-    @Bindable
-    public String getSummary() {
-        return summary;
-    }
-
-    public void setSummary(String summary) {
-        this.summary = summary;
-        notifyPropertyChanged(BR.summary);
-    }
-
-    @Bindable
-    public String getPrice() {
-        return price;
-    }
-
-    public void setPrice(String price) {
-        this.price = price;
-        notifyPropertyChanged(BR.price);
-    }
-
-    @Bindable
     public List<String> getAuthor() {
         return author;
     }
@@ -405,23 +300,4 @@ public class BooksBean extends BaseObservable implements Serializable{
         notifyPropertyChanged(BR.author);
     }
 
-    @Bindable
-    public List<TagsBean> getTags() {
-        return tags;
-    }
-
-    public void setTags(List<TagsBean> tags) {
-        this.tags = tags;
-        notifyPropertyChanged(BR.tags);
-    }
-
-    @Bindable
-    public List<String> getTranslator() {
-        return translator;
-    }
-
-    public void setTranslator(List<String> translator) {
-        this.translator = translator;
-        notifyPropertyChanged(BR.translator);
-    }
 }

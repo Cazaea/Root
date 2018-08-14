@@ -13,9 +13,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
- * Created by yangcai on 2016/1/27.
+ * Created by Cazaea on 2016/1/27.
  */
-public class YunRefreshHeader extends LinearLayout implements BaseRefreshHeader {
+public class RefreshHeader extends LinearLayout implements BaseRefreshHeader {
     private Context mContext;
     private AnimationDrawable animationDrawable;
     private TextView msg;
@@ -23,15 +23,15 @@ public class YunRefreshHeader extends LinearLayout implements BaseRefreshHeader 
     private int mMeasuredHeight;
     private LinearLayout mContainer;
 
-    public YunRefreshHeader(Context context) {
+    public RefreshHeader(Context context) {
         this(context, null);
     }
 
-    public YunRefreshHeader(Context context, AttributeSet attrs) {
+    public RefreshHeader(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public YunRefreshHeader(Context context, AttributeSet attrs, int defStyleAttr) {
+    public RefreshHeader(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.mContext = context;
         initView();

@@ -27,6 +27,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
+ * 最新的电影详情页：
  * 继承基类而写的电影详情页 2016-12-13
  */
 public class OneMovieDetailActivity extends BaseHeaderActivity<HeaderSlideShapeBinding, ActivityOneMovieDetailBinding> {
@@ -116,23 +117,15 @@ public class OneMovieDetailActivity extends BaseHeaderActivity<HeaderSlideShapeB
      * 异步线程转换数据
      */
     private void transformData(final MovieDetailBean movieDetailBean) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                for (int i = 0; i < movieDetailBean.getDirectors().size(); i++) {
-                    movieDetailBean.getDirectors().get(i).setType("导演");
-                }
-                for (int i = 0; i < movieDetailBean.getCasts().size(); i++) {
-                    movieDetailBean.getCasts().get(i).setType("演员");
-                }
-
-                OneMovieDetailActivity.this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        setAdapter(movieDetailBean);
-                    }
-                });
+        new Thread(() -> {
+            for (int i = 0; i < movieDetailBean.getDirectors().size(); i++) {
+                movieDetailBean.getDirectors().get(i).setType("导演");
             }
+            for (int i = 0; i < movieDetailBean.getCasts().size(); i++) {
+                movieDetailBean.getCasts().get(i).setType("演员");
+            }
+
+            OneMovieDetailActivity.this.runOnUiThread(() -> setAdapter(movieDetailBean));
         }).start();
     }
 
@@ -169,9 +162,8 @@ public class OneMovieDetailActivity extends BaseHeaderActivity<HeaderSlideShapeB
     public static void start(Activity context, SubjectsBean positionData, ImageView imageView) {
         Intent intent = new Intent(context, OneMovieDetailActivity.class);
         intent.putExtra("bean", positionData);
-        ActivityOptionsCompat options =
-                ActivityOptionsCompat.makeSceneTransitionAnimation(context,
-                        imageView, CommonUtils.getString(R.string.transition_movie_img));//与xml文件对应
+        // 与xml文件对应
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(context, imageView, CommonUtils.getString(R.string.transition_movie_img));
         ActivityCompat.startActivity(context, intent, options.toBundle());
     }
 

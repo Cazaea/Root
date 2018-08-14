@@ -44,12 +44,9 @@ public class JokeAdapter extends BaseRecyclerViewAdapter<DuanZiBean> {
                 binding.executePendingBindings();
                 String time = TimeUtil.formatDataTime(Long.valueOf(bean.getCreateTime() + "000"));
                 binding.setTime(time);
-                binding.llItemTop.setOnLongClickListener(new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View v) {
-                        DialogBuild.showItems(v,bean.getContent());
-                        return false;
-                    }
+                binding.llItemTop.setOnLongClickListener(v -> {
+                    DialogBuild.showItems(v,bean.getContent());
+                    return false;
                 });
             }
         }

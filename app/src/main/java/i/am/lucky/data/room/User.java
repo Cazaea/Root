@@ -8,14 +8,14 @@ import android.support.annotation.NonNull;
 /**
  * @author Cazaea
  * @date 2017/12/30
- * @description 注意：1、建值如果为 String id; 使用getWid(),则会报错！！！
+ * @description 注意：
+ * 1、建值如果为 String id; 使用getWid(),则会报错！！！
  * 2、有一个key就要有对应的get和set
  * 3、List<>不能简单使用，需要处理
  */
 
 @Entity(tableName = "User")
 public class User {
-
 
     /**
      * 通过主键来标识删除的

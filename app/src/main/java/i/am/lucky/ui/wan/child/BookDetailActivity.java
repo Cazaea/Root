@@ -38,7 +38,7 @@ public class BookDetailActivity extends BaseHeaderActivity<HeaderBookDetailBindi
             booksBean = (BooksBean) getIntent().getSerializableExtra(EXTRA_PARAM);
         }
 
-        setMotion(setHeaderPicView(),true);
+        setMotion(setHeaderPicView(), true);
         initSlideShapeTheme(setHeaderImgUrl(), setHeaderImageView());
 
         setTitle(booksBean.getTitle());

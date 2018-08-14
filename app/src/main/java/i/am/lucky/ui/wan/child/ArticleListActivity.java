@@ -15,6 +15,7 @@ import i.am.lucky.utils.CommonUtils;
 import i.am.lucky.viewmodel.wan.ArticleListListViewModel;
 import i.am.lucky.viewmodel.wan.WanAndroidListViewModel;
 import i.am.lucky.viewmodel.wan.WanNavigator;
+
 import i.am.lucky.recycler.XRecyclerView;
 
 /**

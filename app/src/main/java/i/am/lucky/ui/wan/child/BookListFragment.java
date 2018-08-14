@@ -8,7 +8,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.view.inputmethod.EditorInfo;
 
-import i.am.lucky.MainActivity;
 import i.am.lucky.R;
 import i.am.lucky.adapter.WanBookAdapter;
 import i.am.lucky.base.BaseFragment;
@@ -18,8 +17,8 @@ import i.am.lucky.databinding.HeaderItemBookBinding;
 import i.am.lucky.http.HttpClient;
 import i.am.lucky.utils.CommonUtils;
 import i.am.lucky.utils.DebugUtil;
-import i.am.lucky.recycler.XRecyclerView;
 
+import i.am.lucky.recycler.XRecyclerView;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -27,7 +26,7 @@ import rx.schedulers.Schedulers;
 
 /**
  * @author Cazaea
- *         Updated by Cazaea on 18/02/07.
+ * Updated by Cazaea on 18/02/07.
  */
 public class BookListFragment extends BaseFragment<FragmentWanAndroidBinding> {
 
@@ -39,9 +38,7 @@ public class BookListFragment extends BaseFragment<FragmentWanAndroidBinding> {
     private int mStart = 0;
     // 一次请求的数量
     private int mCount = 18;
-    private MainActivity activity;
     private WanBookAdapter mBookAdapter;
-    private GridLayoutManager mLayoutManager;
 
     @Override
     public int setContent() {
@@ -51,7 +48,6 @@ public class BookListFragment extends BaseFragment<FragmentWanAndroidBinding> {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        activity = (MainActivity) context;
     }
 
     public static BookListFragment newInstance(String param1) {
@@ -87,27 +83,21 @@ public class BookListFragment extends BaseFragment<FragmentWanAndroidBinding> {
 
     private void initRefreshView() {
         bindingView.srlBook.setColorSchemeColors(CommonUtils.getColor(R.color.colorDefaultTheme));
-        bindingView.srlBook.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                bindingView.srlBook.postDelayed(() -> {
-                    mStart = 0;
-                    bindingView.xrvBook.reset();
-                    loadCustomData();
-                }, 1000);
-
-            }
-        });
-        mLayoutManager = new GridLayoutManager(getActivity(), 3);
+        bindingView.srlBook.setOnRefreshListener(() -> bindingView.srlBook.postDelayed(() -> {
+            mStart = 0;
+            bindingView.xrvBook.reset();
+            loadCustomData();
+        }, 300));
+        GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 3);
         bindingView.xrvBook.setLayoutManager(mLayoutManager);
         bindingView.xrvBook.setPullRefreshEnabled(false);
         bindingView.xrvBook.clearHeader();
         mBookAdapter = new WanBookAdapter(getActivity());
         bindingView.xrvBook.setAdapter(mBookAdapter);
         HeaderItemBookBinding oneBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.header_item_book, null, false);
-        bindingView.xrvBook.addHeaderView(oneBinding.getRoot());
         oneBinding.etTypeName.setText(mType);
         oneBinding.etTypeName.setSelection(mType.length());
+        bindingView.xrvBook.addHeaderView(oneBinding.getRoot());
         /** 处理键盘搜索键 */
         oneBinding.etTypeName.setOnEditorActionListener((textView, actionId, keyEvent) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
@@ -140,12 +130,7 @@ public class BookListFragment extends BaseFragment<FragmentWanAndroidBinding> {
         }
 
         bindingView.srlBook.setRefreshing(true);
-        bindingView.srlBook.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                loadCustomData();
-            }
-        }, 500);
+        bindingView.srlBook.postDelayed(this::loadCustomData, 500);
         DebugUtil.error("-----setRefreshing");
     }
 
@@ -180,18 +165,21 @@ public class BookListFragment extends BaseFragment<FragmentWanAndroidBinding> {
                     public void onNext(BookBean bookBean) {
                         if (mStart == 0) {
                             if (bookBean != null && bookBean.getBooks() != null && bookBean.getBooks().size() > 0) {
-
                                 mBookAdapter.clear();
-                                mBookAdapter.addAll(bookBean.getBooks());
-                                mBookAdapter.notifyDataSetChanged();
-                                bindingView.xrvBook.refreshComplete();
+                            } else {
+                                showError();
+                                return;
                             }
                             mIsFirst = false;
                         } else {
-                            mBookAdapter.addAll(bookBean.getBooks());
-                            mBookAdapter.notifyDataSetChanged();
-                            bindingView.xrvBook.refreshComplete();
+                            if (bookBean == null || bookBean.getBooks() == null || bookBean.getBooks().size() == 0) {
+                                bindingView.xrvBook.noMoreLoading();
+                                return;
+                            }
                         }
+                        mBookAdapter.addAll(bookBean.getBooks());
+                        mBookAdapter.notifyDataSetChanged();
+                        bindingView.xrvBook.refreshComplete();
                     }
                 });
         addSubscription(get);

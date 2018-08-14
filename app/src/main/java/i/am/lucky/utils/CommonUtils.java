@@ -1,5 +1,6 @@
 package i.am.lucky.utils;
 
+import android.annotation.SuppressLint;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -36,7 +37,7 @@ public class CommonUtils {
      */
     private String getDate() {
         Date date = new Date();
-        SimpleDateFormat dateFm = new SimpleDateFormat("dd");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFm = new SimpleDateFormat("dd");
         return dateFm.format(date);
     }
 

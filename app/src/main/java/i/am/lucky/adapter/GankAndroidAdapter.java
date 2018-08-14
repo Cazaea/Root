@@ -1,6 +1,8 @@
 package i.am.lucky.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,11 +32,11 @@ public class GankAndroidAdapter extends BaseRecyclerViewAdapter<GankIoDataBean.R
         this.isAll = isAll;
     }
 
+    @NonNull
     @Override
-    public BaseRecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public BaseRecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new ViewHolder(parent, R.layout.item_android);
     }
-
 
     private class ViewHolder extends BaseRecyclerViewHolder<GankIoDataBean.ResultBean, ItemAndroidBinding> {
 
@@ -42,6 +44,7 @@ public class GankAndroidAdapter extends BaseRecyclerViewAdapter<GankIoDataBean.R
             super(parent, item_android);
         }
 
+        @SuppressLint("SetTextI18n")
         @Override
         public void onBindViewHolder(final GankIoDataBean.ResultBean object, int position) {
 

@@ -44,7 +44,7 @@ class HttpHead {
         return info.versionName;
     }
 
-    @SuppressLint({"MissingPermission", "HardwareIds"})
+    @SuppressLint("HardwareIds")
     private static String getUuid() {
         TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         String tmDevice, tmSerial, androidId;

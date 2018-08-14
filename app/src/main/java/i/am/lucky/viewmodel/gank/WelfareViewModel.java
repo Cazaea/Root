@@ -2,7 +2,6 @@ package i.am.lucky.viewmodel.gank;
 
 import android.arch.lifecycle.ViewModel;
 
-import i.am.lucky.http.HttpUtils;
 import i.am.lucky.base.BaseFragment;
 import i.am.lucky.bean.GankIoDataBean;
 import i.am.lucky.data.model.GankOtherModel;
@@ -10,6 +9,7 @@ import i.am.lucky.http.RequestImpl;
 
 import java.util.ArrayList;
 
+import i.am.lucky.http.HttpUtils;
 import rx.Subscription;
 
 /**

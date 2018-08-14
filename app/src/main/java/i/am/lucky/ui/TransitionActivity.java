@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
-
 import i.am.lucky.MainActivity;
 import i.am.lucky.R;
 import i.am.lucky.app.ConstantsImageUrl;

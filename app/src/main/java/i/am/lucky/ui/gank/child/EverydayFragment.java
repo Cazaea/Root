@@ -17,7 +17,7 @@ import i.am.lucky.R;
 import i.am.lucky.adapter.EverydayAdapter;
 import i.am.lucky.base.BaseFragment;
 import i.am.lucky.bean.AndroidBean;
-import i.am.lucky.bean.FrontpageBean;
+import i.am.lucky.bean.FrontPageBean;
 import i.am.lucky.databinding.FooterItemEverydayBinding;
 import i.am.lucky.databinding.FragmentEverydayBinding;
 import i.am.lucky.databinding.HeaderItemEverydayBinding;
@@ -32,6 +32,7 @@ import i.am.lucky.utils.UpdateUtil;
 import i.am.lucky.view.webview.WebViewActivity;
 import i.am.lucky.viewmodel.gank.EverydayNavigator;
 import i.am.lucky.viewmodel.gank.EverydayViewModel;
+import rx.Subscription;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,7 +77,7 @@ public class EverydayFragment extends BaseFragment<FragmentEverydayBinding> impl
         showContentView();
         initAnimation();
 
-        everydayViewModel = new EverydayViewModel(this);
+        everydayViewModel = new EverydayViewModel();
         everydayViewModel.setEverydayNavigator(this);
         mHeaderBinding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.header_item_everyday, null, false);
         initLocalSetting();
@@ -162,11 +163,16 @@ public class EverydayFragment extends BaseFragment<FragmentEverydayBinding> impl
         everydayViewModel.handleCache();
     }
 
+    @Override
+    public void addRxSubscription(Subscription subscription) {
+        addSubscription(subscription);
+    }
+
     /**
      * 设置banner图
      */
     @Override
-    public void showBannerView(ArrayList<String> mBannerImages, List<FrontpageBean.ResultBannerBean.FocusBean.ResultBeanX> result) {
+    public void showBannerView(ArrayList<String> mBannerImages, List<FrontPageBean.ResultBannerBean.FocusBean.ResultBeanX> result) {
         mHeaderBinding.banner.setImages(mBannerImages).setImageLoader(new GlideImageLoader()).start();
         if (result != null) {
             mHeaderBinding.banner.setOnBannerListener(position -> {

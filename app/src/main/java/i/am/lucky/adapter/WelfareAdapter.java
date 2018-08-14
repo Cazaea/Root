@@ -1,6 +1,6 @@
 package i.am.lucky.adapter;
 
-import android.view.View;
+import android.support.annotation.NonNull;
 import android.view.ViewGroup;
 
 import i.am.lucky.R;
@@ -15,11 +15,12 @@ import i.am.lucky.utils.DensityUtil;
  */
 
 public class WelfareAdapter extends BaseRecyclerViewAdapter<GankIoDataBean.ResultBean> {
+
+    @NonNull
     @Override
-    public BaseRecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public BaseRecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new ViewHolder(parent, R.layout.item_welfare);
     }
-
 
     private class ViewHolder extends BaseRecyclerViewHolder<GankIoDataBean.ResultBean, ItemWelfareBinding> {
 
@@ -42,31 +43,13 @@ public class WelfareAdapter extends BaseRecyclerViewAdapter<GankIoDataBean.Resul
                 DensityUtil.setViewMargin(itemView, false, 6, 12, 12, 0);
             }
             binding.setBean(resultsBean);
-            // 仿抖动
+            // TODO 仿抖动
             binding.executePendingBindings();
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (listener != null) {
-                        listener.onClick(resultsBean, position);
-                    }
+            itemView.setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.onClick(resultsBean, position);
                 }
             });
-
-//            binding.ivWelfare.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    ArrayList<String> imageuri = new ArrayList<String>();
-//                    imageuri.add(resultsBean.getUrl());
-//                    Bundle bundle = new Bundle();
-//                    bundle.putInt("selet", 1);// 2,大图显示当前页数，1,头像，不显示页数
-//                    bundle.putInt("code", 0);//第几张
-//                    bundle.putStringArrayList("imageuri", imageuri);
-//                    Intent intent = new Intent(v.getContext(), ViewBigImageActivity.class);
-//                    intent.putExtras(bundle);
-//                    v.getContext().startActivity(intent);
-//                }
-//            });
         }
     }
 }

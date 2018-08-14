@@ -4,6 +4,7 @@ import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -14,6 +15,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import java.util.Objects;
+
 import i.am.lucky.R;
 import i.am.lucky.utils.PerfectClickListener;
 
@@ -21,7 +24,7 @@ import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 
 /**
- * 是没有title的Fragment
+ * 是没有Title的Fragment
  */
 public abstract class BaseFragment<SV extends ViewDataBinding> extends Fragment {
 
@@ -39,11 +42,10 @@ public abstract class BaseFragment<SV extends ViewDataBinding> extends Fragment 
     private AnimationDrawable mAnimationDrawable;
     private CompositeSubscription mCompositeSubscription;
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View ll = inflater.inflate(R.layout.fragment_base, null);
-        bindingView = DataBindingUtil.inflate(getActivity().getLayoutInflater(), setContent(), null, false);
+        bindingView = DataBindingUtil.inflate(Objects.requireNonNull(getActivity()).getLayoutInflater(), setContent(), null, false);
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         bindingView.getRoot().setLayoutParams(params);
         mContainer = (RelativeLayout) ll.findViewById(R.id.container);

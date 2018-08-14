@@ -3,10 +3,11 @@ package i.am.lucky.bean.moviechild;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 
-import i.am.lucky.http.ParamNames;
 import i.am.lucky.BR;
 
 import java.io.Serializable;
+
+import i.am.lucky.http.ParamNames;
 
 /**
  * Created by Cazaea on 2016/11/25.

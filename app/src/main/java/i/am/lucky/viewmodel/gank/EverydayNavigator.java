@@ -1,10 +1,12 @@
 package i.am.lucky.viewmodel.gank;
 
 import i.am.lucky.bean.AndroidBean;
-import i.am.lucky.bean.FrontpageBean;
+import i.am.lucky.bean.FrontPageBean;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import rx.Subscription;
 
 /**
  * @author Cazaea
@@ -27,7 +29,7 @@ public interface EverydayNavigator {
     /**
      * 显示轮播图
      */
-    void showBannerView(ArrayList<String> mBannerImages, List<FrontpageBean.ResultBannerBean.FocusBean.ResultBeanX> result);
+    void showBannerView(ArrayList<String> mBannerImages, List<FrontPageBean.ResultBannerBean.FocusBean.ResultBeanX> result);
 
     /**
      * 显示旋转动画
@@ -43,4 +45,9 @@ public interface EverydayNavigator {
      * 取缓存
      */
     void getACacheData();
+
+    /**
+     * 取消注册
+     */
+    void addRxSubscription(Subscription subscription);
 }

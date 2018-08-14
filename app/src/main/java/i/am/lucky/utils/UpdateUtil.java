@@ -26,7 +26,7 @@ public class UpdateUtil {
      * BuildConfig.UPDATE_TOKEN
      *
      * @param activity
-     * @param isShowToast 是否弹出Snackbar提示
+     * @param isShowToast 是否弹出SnackBar提示
      */
     public static void check(final Activity activity, final boolean isShowToast) {
 

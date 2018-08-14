@@ -9,7 +9,6 @@ import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 
-
 import i.am.lucky.R;
 import i.am.lucky.view.webview.WebViewActivity;
 
@@ -26,8 +25,8 @@ public class MyWebChromeClient extends WebChromeClient {
 
     private ValueCallback<Uri> mUploadMessage;
     private ValueCallback<Uri[]> mUploadMessageForAndroid5;
-    public static int FILECHOOSER_RESULTCODE = 1;
-    public static int FILECHOOSER_RESULTCODE_FOR_ANDROID_5 = 2;
+    public static int FILE_CHOOSER_RESULT_CODE = 1;
+    public static int FILE_CHOOSER_RESULT_CODE_FOR_ANDROID_5 = 2;
 
     private View mXProgressVideo;
     private WebViewActivity mActivity;
@@ -111,13 +110,13 @@ public class MyWebChromeClient extends WebChromeClient {
         return title + " ";
     }
 
-    //扩展浏览器上传文件
-    //3.0++版本
+    // 扩展浏览器上传文件
+    // 3.0++版本
     public void openFileChooser(ValueCallback<Uri> uploadMsg, String acceptType) {
         openFileChooserImpl(uploadMsg);
     }
 
-    //3.0--版本
+    // 3.0--版本
     public void openFileChooser(ValueCallback<Uri> uploadMsg) {
         openFileChooserImpl(uploadMsg);
     }
@@ -138,7 +137,7 @@ public class MyWebChromeClient extends WebChromeClient {
         Intent i = new Intent(Intent.ACTION_GET_CONTENT);
         i.addCategory(Intent.CATEGORY_OPENABLE);
         i.setType("image/*");
-        mActivity.startActivityForResult(Intent.createChooser(i, "文件选择"), FILECHOOSER_RESULTCODE);
+        mActivity.startActivityForResult(Intent.createChooser(i, "文件选择"), FILE_CHOOSER_RESULT_CODE);
     }
 
     private void openFileChooserImplForAndroid5(ValueCallback<Uri[]> uploadMsg) {
@@ -151,7 +150,7 @@ public class MyWebChromeClient extends WebChromeClient {
         chooserIntent.putExtra(Intent.EXTRA_INTENT, contentSelectionIntent);
         chooserIntent.putExtra(Intent.EXTRA_TITLE, "图片选择");
 
-        mActivity.startActivityForResult(chooserIntent, FILECHOOSER_RESULTCODE_FOR_ANDROID_5);
+        mActivity.startActivityForResult(chooserIntent, FILE_CHOOSER_RESULT_CODE_FOR_ANDROID_5);
     }
 
     /**

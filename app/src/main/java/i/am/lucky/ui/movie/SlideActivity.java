@@ -21,6 +21,9 @@ import i.am.lucky.utils.DebugUtil;
 import i.am.lucky.view.CallBack_ScrollChanged;
 import i.am.lucky.view.test.StatusBarUtils;
 
+/**
+ * （已使用：{@link OneMovieDetailActivity} 替代）
+ */
 public class SlideActivity extends AppCompatActivity {
 
     private ActivitySlideBinding binding;
@@ -52,30 +55,27 @@ public class SlideActivity extends AppCompatActivity {
         if (binding.imgItemBg != null) {
             ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) binding.imgItemBg.getLayoutParams();
             layoutParams.setMargins(0, -getStatusBarHeight(this), 0, 0);
-            DebugUtil.error("getStatusBarHeight:"+getStatusBarHeight(this));
+            DebugUtil.error("getStatusBarHeight:" + getStatusBarHeight(this));
         }
         initNewSlidingParams();
 
-        binding.scrollView.setCallBack_scrollChanged(new CallBack_ScrollChanged() {
-            @Override
-            public void onScrollChanged(int scrolledY) {
-                if (scrolledY < 0) {
-                    scrolledY = 0;
-                }
-                if (scrolledY < slidingDistance) {
-                    // 状态栏渐变
-                    StatusBarUtils.setTranslucentImageHeader(SlideActivity.this, scrolledY * 110 / slidingDistance, binding.titleToolBar);
-                    // title渐变
-                    binding.titleToolBar.setBackgroundColor(Color.argb(scrolledY * 110 / slidingDistance, 0x00, 0x00, 0x00));
-                    // 背景图高度设置
-                    binding.imgItemBg.setPadding(0, -scrolledY, 0, 0);
-                    currScrollY = scrolledY;
-                } else {
-                    StatusBarUtils.setTranslucentImageHeader(SlideActivity.this, 110, binding.titleToolBar);
-                    binding.titleToolBar.setBackgroundColor(Color.argb(110, 0x00, 0x00, 0x00));
-                    binding.imgItemBg.setPadding(0, -slidingDistance, 0, 0);
-                    currScrollY = slidingDistance;
-                }
+        binding.scrollView.setCallBack_scrollChanged(scrolledY -> {
+            if (scrolledY < 0) {
+                scrolledY = 0;
+            }
+            if (scrolledY < slidingDistance) {
+                // 状态栏渐变
+                StatusBarUtils.setTranslucentImageHeader(SlideActivity.this, scrolledY * 110 / slidingDistance, binding.titleToolBar);
+                // title渐变
+                binding.titleToolBar.setBackgroundColor(Color.argb(scrolledY * 110 / slidingDistance, 0x00, 0x00, 0x00));
+                // 背景图高度设置
+                binding.imgItemBg.setPadding(0, -scrolledY, 0, 0);
+                currScrollY = scrolledY;
+            } else {
+                StatusBarUtils.setTranslucentImageHeader(SlideActivity.this, 110, binding.titleToolBar);
+                binding.titleToolBar.setBackgroundColor(Color.argb(110, 0x00, 0x00, 0x00));
+                binding.imgItemBg.setPadding(0, -slidingDistance, 0, 0);
+                currScrollY = slidingDistance;
             }
         });
     }
@@ -98,9 +98,8 @@ public class SlideActivity extends AppCompatActivity {
     public static void start(Activity context, SubjectsBean positionData, ImageView imageView) {
         Intent intent = new Intent(context, SlideActivity.class);
         intent.putExtra("bean", positionData);
-        ActivityOptionsCompat options =
-                ActivityOptionsCompat.makeSceneTransitionAnimation(context,
-                        imageView, CommonUtils.getString(R.string.transition_movie_img));//与xml文件对应
+        // 与xml文件对应
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(context, imageView, CommonUtils.getString(R.string.transition_movie_img));
         ActivityCompat.startActivity(context, intent, options.toBundle());
     }
 

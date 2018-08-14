@@ -6,8 +6,8 @@ import android.view.View;
 import com.nineoldandroids.view.ViewHelper;
 
 /**
- * Created by Linhh on 16/5/24.
- * 使用了nineoldandroids
+ * Created by Cazaea on 16/5/24.
+ * 使用了NineOldAndroids
  */
 public class Instrument {
     private static Instrument mInstrument;

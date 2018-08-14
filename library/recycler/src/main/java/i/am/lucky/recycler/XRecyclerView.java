@@ -23,7 +23,7 @@ public class XRecyclerView extends RecyclerView {
     private SparseArray<View> mFootViews = new SparseArray<View>();
     private boolean pullRefreshEnabled = true;
     private boolean loadingMoreEnabled = true;
-    private YunRefreshHeader mRefreshHeader;
+    private RefreshHeader mRefreshHeader;
     private boolean isLoadingData;
     public int previousTotal;
     public boolean isNoMore;
@@ -47,7 +47,7 @@ public class XRecyclerView extends RecyclerView {
 
     private void init(Context context) {
         if (pullRefreshEnabled) {
-            YunRefreshHeader refreshHeader = new YunRefreshHeader(context);
+            RefreshHeader refreshHeader = new RefreshHeader(context);
             mHeaderViews.put(0, refreshHeader);
             mRefreshHeader = refreshHeader;
         }
@@ -85,8 +85,8 @@ public class XRecyclerView extends RecyclerView {
     }
 
     public void addHeaderView(View view) {
-        if (pullRefreshEnabled && !(mHeaderViews.get(0) instanceof YunRefreshHeader)) {
-            YunRefreshHeader refreshHeader = new YunRefreshHeader(getContext());
+        if (pullRefreshEnabled && !(mHeaderViews.get(0) instanceof RefreshHeader)) {
+            RefreshHeader refreshHeader = new RefreshHeader(getContext());
             mHeaderViews.put(0, refreshHeader);
             mRefreshHeader = refreshHeader;
         }
@@ -164,7 +164,7 @@ public class XRecyclerView extends RecyclerView {
                     && lastVisibleItemPosition >= layoutManager.getItemCount() - 1
                     && layoutManager.getItemCount() > layoutManager.getChildCount()
                     && !isNoMore
-                    && mRefreshHeader.getState() < YunRefreshHeader.STATE_REFRESHING) {
+                    && mRefreshHeader.getState() < RefreshHeader.STATE_REFRESHING) {
 
                 View footView = mFootViews.get(0);
                 isLoadingData = true;
@@ -201,7 +201,7 @@ public class XRecyclerView extends RecyclerView {
                 mLastY = ev.getRawY();
                 if (isOnTop() && pullRefreshEnabled) {
                     mRefreshHeader.onMove(deltaY / DRAG_RATE);
-                    if (mRefreshHeader.getVisiableHeight() > 0 && mRefreshHeader.getState() < YunRefreshHeader.STATE_REFRESHING) {
+                    if (mRefreshHeader.getVisiableHeight() > 0 && mRefreshHeader.getState() < RefreshHeader.STATE_REFRESHING) {
                         return false;
                     }
                 }

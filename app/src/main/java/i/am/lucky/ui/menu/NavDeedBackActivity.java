@@ -46,7 +46,7 @@ public class NavDeedBackActivity extends BaseActivity<ActivityNavDeedBackBinding
                     WebViewActivity.loadUrl(v.getContext(), CommonUtils.getString(R.string.string_url_issues), "Issues");
                     break;
                 case R.id.tv_qq:
-                    if (BaseTools.isApplicationAvilible(NavDeedBackActivity.this, "com.tencent.mobileqq")) {
+                    if (BaseTools.isApplicationAvailable(NavDeedBackActivity.this, "com.tencent.mobileqq")) {
                         String url = "mqqwpa://im/chat?chat_type=wpa&uin=770413277";
                         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
                     } else {

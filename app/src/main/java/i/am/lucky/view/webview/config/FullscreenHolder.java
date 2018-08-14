@@ -1,5 +1,6 @@
 package i.am.lucky.view.webview.config;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.MotionEvent;
 import android.widget.FrameLayout;
@@ -15,6 +16,7 @@ public class FullscreenHolder extends FrameLayout {
         setBackgroundColor(ctx.getResources().getColor(android.R.color.black));
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         return true;

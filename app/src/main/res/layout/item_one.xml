@@ -25,7 +25,7 @@
         android:background="@drawable/ripple_one_item_bg"
         android:onClick="@{() -> callback.onClick(subjectsBean)}"
         android:orientation="vertical"
-        android:paddingLeft="5dp"
+        android:paddingStart="5dp"
         android:paddingTop="5dp">
 
         <LinearLayout
@@ -100,7 +100,6 @@
                 </LinearLayout>
 
                 <!--主演-->
-
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent">

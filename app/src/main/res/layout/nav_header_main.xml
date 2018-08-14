@@ -34,7 +34,7 @@
                     android:gravity="bottom"
                     android:orientation="vertical"
                     android:paddingBottom="@dimen/activity_vertical_margin"
-                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingStart="@dimen/activity_horizontal_margin"
                     android:paddingRight="@dimen/activity_horizontal_margin"
                     android:paddingTop="@dimen/activity_vertical_margin">
 
@@ -68,7 +68,7 @@
                             android:background="@drawable/shape_bg_level"
                             android:gravity="center"
                             android:paddingBottom="1dp"
-                            android:paddingLeft="6dp"
+                            android:paddingStart="6dp"
                             android:paddingRight="6dp"
                             android:paddingTop="1dp"
                             android:text="Lv.10"
@@ -93,7 +93,7 @@
                 android:clickable="true"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingLeft="16dp"
+                android:paddingStart="16dp"
                 android:paddingRight="16dp">
 
                 <ImageView
@@ -120,7 +120,7 @@
                 android:clickable="true"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingLeft="16dp"
+                android:paddingStart="16dp"
                 android:paddingRight="16dp">
 
                 <ImageView
@@ -146,7 +146,7 @@
                 android:clickable="true"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingLeft="16dp"
+                android:paddingStart="16dp"
                 android:paddingRight="16dp">
 
                 <ImageView
@@ -172,7 +172,7 @@
                 android:clickable="true"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingLeft="16dp"
+                android:paddingStart="16dp"
                 android:paddingRight="16dp">
 
                 <ImageView
@@ -204,7 +204,7 @@
                 android:clickable="true"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingLeft="16dp"
+                android:paddingStart="16dp"
                 android:paddingRight="16dp">
 
                 <ImageView
@@ -229,7 +229,7 @@
                 android:background="?attr/selectableItemBackground"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingLeft="16dp"
+                android:paddingStart="16dp"
                 android:paddingRight="16dp">
 
                 <ImageView
@@ -256,7 +256,7 @@
                 android:gravity="center_vertical"
                 android:onClick="@{listener::onNightModeClick}"
                 android:orientation="horizontal"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingStart="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 android:visibility="gone">
 
@@ -291,7 +291,7 @@
                 android:clickable="true"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingLeft="16dp"
+                android:paddingStart="16dp"
                 android:paddingRight="16dp">
 
                 <ImageView

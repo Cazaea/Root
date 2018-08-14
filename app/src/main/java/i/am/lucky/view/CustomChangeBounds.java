@@ -1,6 +1,8 @@
 package i.am.lucky.view;
 
 import android.animation.Animator;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.transition.ChangeBounds;
 import android.transition.TransitionValues;
 import android.view.ViewGroup;
@@ -9,14 +11,16 @@ import android.view.animation.AnimationUtils;
 
 public class CustomChangeBounds extends ChangeBounds {
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public Animator createAnimator(final ViewGroup sceneRoot,
                                    TransitionValues startValues,
                                    final TransitionValues endValues) {
 
         Animator changeBounds = super.createAnimator(sceneRoot, startValues, endValues);
-        if (startValues == null || endValues == null || changeBounds == null)
+        if (startValues == null || endValues == null || changeBounds == null) {
             return null;
+        }
 
 //        if (endValues.view instanceof ViewGroup) {
 //            ViewGroup vg = (ViewGroup) endValues.view;
@@ -37,8 +41,7 @@ public class CustomChangeBounds extends ChangeBounds {
 //        }
 
         changeBounds.setDuration(500);
-        changeBounds.setInterpolator(AnimationUtils.loadInterpolator(sceneRoot.getContext(),
-                android.R.interpolator.fast_out_slow_in));
+        changeBounds.setInterpolator(AnimationUtils.loadInterpolator(sceneRoot.getContext(), android.R.interpolator.fast_out_slow_in));
         return changeBounds;
     }
 

@@ -71,25 +71,23 @@ public class MyWebViewClient extends WebViewClient {
     }
 
     /**
-     * 网页里可能唤起其他的app
+     * 网页里可能唤起其他的App
      */
     private void handleOtherwise(Activity activity, String url) {
         String appPackageName = "";
         // 支付宝支付
         if (url.contains("alipays")) {
             appPackageName = "com.eg.android.AlipayGphone";
-
             // 微信支付
         } else if (url.contains("weixin://wap/pay")) {
             appPackageName = "com.tencent.mm";
-
             // 京东产品详情
         } else if (url.contains("openapp.jdmobile")) {
             appPackageName = "com.jingdong.app.mall";
         } else {
             startActivity(url);
         }
-        if (BaseTools.isApplicationAvilible(activity, appPackageName)) {
+        if (BaseTools.isApplicationAvailable(activity, appPackageName)) {
             startActivity(url);
         }
     }

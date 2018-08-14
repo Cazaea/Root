@@ -1,5 +1,6 @@
 package i.am.lucky.recycler;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -7,8 +8,10 @@ import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.Objects;
+
 /**
- * Created by yangcai on 2016/1/28.
+ * Created by Cazaea on 2016/1/28.
  */
 public class WrapAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TYPE_REFRESH_HEADER = -5;
@@ -30,7 +33,7 @@ public class WrapAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     @Override
-    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
         RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
         if (manager instanceof GridLayoutManager) {
@@ -46,7 +49,7 @@ public class WrapAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     @Override
-    public void onViewAttachedToWindow(RecyclerView.ViewHolder holder) {
+    public void onViewAttachedToWindow(@NonNull RecyclerView.ViewHolder holder) {
         super.onViewAttachedToWindow(holder);
         ViewGroup.LayoutParams lp = holder.itemView.getLayoutParams();
         if (lp != null
@@ -78,7 +81,7 @@ public class WrapAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == TYPE_REFRESH_HEADER) {
             return new SimpleViewHolder(mHeaderViews.get(0));
         } else if (viewType == TYPE_HEADER) {
@@ -90,7 +93,7 @@ public class WrapAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (isHeader(position)) {
             return;
         }
@@ -99,7 +102,7 @@ public class WrapAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if (adapter != null) {
             adapterCount = adapter.getItemCount();
             if (adjPosition < adapterCount) {
-                adapter.onBindViewHolder(holder, adjPosition);
+                adapter.onBindViewHolder(Objects.requireNonNull(holder), adjPosition);
                 return;
             }
         }

@@ -1,9 +1,9 @@
 package i.am.lucky.bean;
 
-import i.am.lucky.http.ParamNames;
-
 import java.io.Serializable;
 import java.util.List;
+
+import i.am.lucky.http.ParamNames;
 
 /**
  * Created by Cazaea on 2016/11/30.

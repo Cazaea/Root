@@ -29,7 +29,7 @@ public class DialogBuild {
         TextView titleTop = view.findViewById(R.id.title_top);
         titleTop.setText(title);
         builder.setView(view);
-        builder.setPositiveButton("查看详情", clickListener::onClick);
+        builder.setPositiveButton("查看详情", clickListener);
         builder.show();
     }
 

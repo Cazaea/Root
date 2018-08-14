@@ -5,7 +5,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 /**
- * Created by Jaeger on 16/6/8.
+ * Created by Cazaea on 16/6/8.
  *
  * Email: chjie.jaeger@gmail.com
  * GitHub: https://github.com/laobie

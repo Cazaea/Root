@@ -1,8 +1,9 @@
 package i.am.lucky.utils;
 
 import android.content.Context;
-import android.util.Log;
 import android.widget.Toast;
+
+import com.orhanobut.logger.Logger;
 
 /**
  * @author Cazaea
@@ -20,25 +21,27 @@ public class DebugUtil {
 
     public static void debug(String msg) {
         if (DEBUG) {
-            Log.d(TAG, msg);
+            Logger.d(TAG, msg);
         }
     }
 
     public static void debug(String tag, String msg) {
         if (DEBUG) {
-            Log.d(tag, msg);
+            Logger.t(tag);
+            Logger.d(msg);
         }
     }
 
     public static void error(String error) {
         if (DEBUG) {
-            Log.e(TAG, error);
+            Logger.e(TAG, error);
         }
     }
 
     public static void error(String tag, String error) {
         if (DEBUG) {
-            Log.e(tag, error);
+            Logger.t(tag);
+            Logger.e(error);
         }
     }
 }

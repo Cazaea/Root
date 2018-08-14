@@ -75,16 +75,13 @@ public class GankFragment extends BaseFragment<FragmentGankBinding> {
      */
     private void initRxBus() {
         Subscription subscription = RxBus.getDefault().toObservable(RxCodeConstants.JUMP_TYPE, Integer.class)
-                .subscribe(new Action1<Integer>() {
-                    @Override
-                    public void call(Integer integer) {
-                        if (integer == 0) {
-                            bindingView.vpGank.setCurrentItem(3);
-                        } else if (integer == 1) {
-                            bindingView.vpGank.setCurrentItem(1);
-                        } else if (integer == 2) {
-                            bindingView.vpGank.setCurrentItem(2);
-                        }
+                .subscribe(integer -> {
+                    if (integer == 0) {
+                        bindingView.vpGank.setCurrentItem(3);
+                    } else if (integer == 1) {
+                        bindingView.vpGank.setCurrentItem(1);
+                    } else if (integer == 2) {
+                        bindingView.vpGank.setCurrentItem(2);
                     }
                 });
         addSubscription(subscription);

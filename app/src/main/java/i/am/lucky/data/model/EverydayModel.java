@@ -4,7 +4,7 @@ import android.text.TextUtils;
 
 import i.am.lucky.app.ConstantsImageUrl;
 import i.am.lucky.bean.AndroidBean;
-import i.am.lucky.bean.FrontpageBean;
+import i.am.lucky.bean.FrontPageBean;
 import i.am.lucky.bean.GankIoDayBean;
 import i.am.lucky.http.HttpClient;
 import i.am.lucky.http.RequestImpl;
@@ -47,22 +47,28 @@ public class EverydayModel {
     public void showBannerPage(final RequestImpl listener) {
         Subscription subscription = HttpClient.Builder.getTingServer().getFrontPage()
                 .observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
-                .subscribe(new Observer<FrontpageBean>() {
+                .subscribe(new Observer<FrontPageBean>() {
                     @Override
                     public void onCompleted() {
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        listener.loadFailed();
+                        if (listener != null) {
+                            listener.loadFailed();
+                        }
                     }
 
                     @Override
-                    public void onNext(FrontpageBean frontpageBean) {
-                        listener.loadSuccess(frontpageBean);
+                    public void onNext(FrontPageBean frontpageBean) {
+                        if (listener != null) {
+                            listener.loadSuccess(frontpageBean);
+                        }
                     }
                 });
-        listener.addSubscription(subscription);
+        if (listener != null) {
+            listener.addSubscription(subscription);
+        }
     }
 
     /**
@@ -125,8 +131,9 @@ public class EverydayModel {
         };
 
         Subscription subscription = HttpClient.Builder.getGankIOServer().getGankIoDay(year, month, day)
-                .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .flatMap(func1)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
         listener.addSubscription(subscription);
     }
@@ -226,10 +233,10 @@ public class EverydayModel {
             urlLength = ConstantsImageUrl.HOME_SIX_URLS.length;
         }
 
-        String home_six = SPUtils.getString(saveWhere, "");
-        if (!TextUtils.isEmpty(home_six)) {
+        String homeSix = SPUtils.getString(saveWhere, "");
+        if (!TextUtils.isEmpty(homeSix)) {
             // 已取到的值
-            String[] split = home_six.split(",");
+            String[] split = homeSix.split(",");
 
             Random random = new Random();
             for (int j = 0; j < urlLength; j++) {
@@ -243,7 +250,7 @@ public class EverydayModel {
                     }
                 }
                 if (!isUse) {
-                    StringBuilder sb = new StringBuilder(home_six);
+                    StringBuilder sb = new StringBuilder(homeSix);
                     sb.insert(0, randomInt + ",");
                     SPUtils.putString(saveWhere, sb.toString());
                     return randomInt;

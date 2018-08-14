@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import java.util.Objects;
+
 import i.am.lucky.app.RootApplication;
 
 /**
@@ -54,22 +56,22 @@ public class DensityUtil {
         int bottomPx = bottom;
         ViewGroup.LayoutParams params = view.getLayoutParams();
         ViewGroup.MarginLayoutParams marginParams = null;
-        //获取view的margin设置参数
+        // 获取view的margin设置参数
         if (params instanceof ViewGroup.MarginLayoutParams) {
             marginParams = (ViewGroup.MarginLayoutParams) params;
         } else {
-            //不存在时创建一个新的参数
+            // 不存在时创建一个新的参数
             marginParams = new ViewGroup.MarginLayoutParams(params);
         }
 
-        //根据DP与PX转换计算值
+        // 根据DP与PX转换计算值
         if (isDp) {
             leftPx = dip2px(left);
             rightPx = dip2px(right);
             topPx = dip2px(top);
             bottomPx = dip2px(bottom);
         }
-        //设置margin
+        // 设置margin
         marginParams.setMargins(leftPx, topPx, rightPx, bottomPx);
         view.setLayoutParams(marginParams);
         view.requestLayout();
@@ -85,9 +87,9 @@ public class DensityUtil {
      * @param marginTop    上面的dp
      * @param marginBottom 下面的dp
      */
-    public static void formartHight(View imageView, float bili, int type, int marginLR, int marginTop, int marginBottom) {
+    public static void formatHeight(View imageView, float bili, int type, int marginLR, int marginTop, int marginBottom) {
         WindowManager wm = (WindowManager) RootApplication.getInstance().getSystemService(Context.WINDOW_SERVICE);
-        int width = wm.getDefaultDisplay().getWidth();
+        int width = Objects.requireNonNull(wm).getDefaultDisplay().getWidth();
         int height = (int) (width / bili);
         if (type == 1) {
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, height);
@@ -111,7 +113,7 @@ public class DensityUtil {
      * @param bili  图片比例
      * @param type  1:外层 LinearLayout 2：外层 RelativeLayout
      */
-    public static void formartHight(ImageView imageView, int width, float bili, int type) {
+    public static void formatHeight(ImageView imageView, int width, float bili, int type) {
         int height = (int) (width / bili);
         if (type == 1) {
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, height);

@@ -1,5 +1,6 @@
 package i.am.lucky.view.webview;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -22,7 +23,6 @@ import android.widget.ProgressBar;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
 
-import i.am.lucky.http.utils.CheckNetwork;
 import i.am.lucky.R;
 import i.am.lucky.utils.BaseTools;
 import i.am.lucky.utils.CommonUtils;
@@ -34,6 +34,8 @@ import i.am.lucky.view.webview.config.IWebPageView;
 import i.am.lucky.view.webview.config.ImageClickInterface;
 import i.am.lucky.view.webview.config.MyWebChromeClient;
 import i.am.lucky.view.webview.config.MyWebViewClient;
+
+import i.am.lucky.http.utils.CheckNetwork;
 
 /**
  * 网页可以处理:
@@ -149,6 +151,7 @@ public class WebViewActivity extends AppCompatActivity implements IWebPageView {
         tvGunTitle.setText(mTitle);
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     private void initWebView() {
         mProgressBar.setVisibility(View.VISIBLE);
         WebSettings ws = webView.getSettings();
@@ -277,9 +280,9 @@ public class WebViewActivity extends AppCompatActivity implements IWebPageView {
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        if (requestCode == MyWebChromeClient.FILECHOOSER_RESULTCODE) {
+        if (requestCode == MyWebChromeClient.FILE_CHOOSER_RESULT_CODE) {
             mWebChromeClient.mUploadMessage(intent, resultCode);
-        } else if (requestCode == MyWebChromeClient.FILECHOOSER_RESULTCODE_FOR_ANDROID_5) {
+        } else if (requestCode == MyWebChromeClient.FILE_CHOOSER_RESULT_CODE_FOR_ANDROID_5) {
             mWebChromeClient.mUploadMessageForAndroid5(intent, resultCode);
         }
     }

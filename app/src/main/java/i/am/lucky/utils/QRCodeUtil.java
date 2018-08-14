@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-
 /**
  * Created by Cazaea on 16/9/20.
  */
@@ -94,7 +93,7 @@ public class QRCodeUtil {
             return src;
         }
 
-        //获取图片的宽高
+        // 获取图片的宽高
         int srcWidth = src.getWidth();
         int srcHeight = src.getHeight();
         int logoWidth = logo.getWidth();
@@ -108,7 +107,7 @@ public class QRCodeUtil {
             return src;
         }
 
-        //logo大小为二维码整体大小的1/5
+        // logo大小为二维码整体大小的1/5
         float scaleFactor = srcWidth * 1.0f / 5 / logoWidth;
         Bitmap bitmap = Bitmap.createBitmap(srcWidth, srcHeight, Bitmap.Config.ARGB_8888);
         try {
@@ -127,7 +126,7 @@ public class QRCodeUtil {
         return bitmap;
     }
 
-    //文件存储根目录
+    // 文件存储根目录
     private static String getFileRoot(Context context) {
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             File external = context.getExternalFilesDir(null);
@@ -155,21 +154,13 @@ public class QRCodeUtil {
             final String filePath = getFileRoot(mContext) + File.separator + "qr_" + System.currentTimeMillis() + ".jpg";
             SPUtils.putString("share_code_filePath",filePath);
 
-            //二维码图片较大时，生成图片、保存文件的时间可能较长，因此放在新线程中
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    boolean success = QRCodeUtil.createQRImage(text, 800, 800, BitmapFactory.decodeResource(mContext.getResources(), centerPhoto),
-                            filePath);
+            // 二维码图片较大时，生成图片、保存文件的时间可能较长，因此放在新线程中
+            new Thread(() -> {
+                boolean success = QRCodeUtil.createQRImage(text, 800, 800, BitmapFactory.decodeResource(mContext.getResources(), centerPhoto),
+                        filePath);
 
-                    if (success) {
-                        mContext.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                imageView.setImageBitmap(BitmapFactory.decodeFile(filePath));
-                            }
-                        });
-                    }
+                if (success) {
+                    mContext.runOnUiThread(() -> imageView.setImageBitmap(BitmapFactory.decodeFile(filePath)));
                 }
             }).start();
         }

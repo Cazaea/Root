@@ -1,5 +1,6 @@
 package i.am.lucky.utils;
 
+import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -19,6 +20,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 /**
  * Created by Cazaea on 2017/2/13.
@@ -37,9 +39,8 @@ public class BaseTools {
         WindowManager wm = (WindowManager) (context
                 .getSystemService(Context.WINDOW_SERVICE));
         DisplayMetrics dm = new DisplayMetrics();
-        wm.getDefaultDisplay().getMetrics(dm);
-        int mScreenWidth = dm.widthPixels;
-        return mScreenWidth;
+        Objects.requireNonNull(wm).getDefaultDisplay().getMetrics(dm);
+        return dm.widthPixels;
     }
 
     public static int getWindowHeigh(Context context) {
@@ -47,16 +48,18 @@ public class BaseTools {
         WindowManager wm = (WindowManager) (context
                 .getSystemService(Context.WINDOW_SERVICE));
         DisplayMetrics dm = new DisplayMetrics();
-        wm.getDefaultDisplay().getMetrics(dm);
-        int mScreenHeigh = dm.heightPixels;
-        return mScreenHeigh;
+        Objects.requireNonNull(wm).getDefaultDisplay().getMetrics(dm);
+        return dm.heightPixels;
     }
 
-    //获得状态栏/通知栏的高度
+    /**
+     * 获得状态栏/通知栏的高度
+     */
+    @SuppressLint("PrivateApi")
     public static int getStatusBarHeight(Context context) {
-        Class<?> c = null;
-        Object obj = null;
-        Field field = null;
+        Class<?> c;
+        Object obj;
+        Field field;
         int x = 0, statusBarHeight = 0;
         try {
             c = Class.forName("com.android.internal.R$dimen");
@@ -78,7 +81,7 @@ public class BaseTools {
      * @return String
      */
     public static String formatCurrency(double d) {
-        String s = "";
+        String s;
         try {
             DecimalFormat nf = (DecimalFormat) NumberFormat.getCurrencyInstance(Locale.CHINA);
             s = nf.format(d);
@@ -110,7 +113,7 @@ public class BaseTools {
      */
     public String getTopActivityName(Context context) {
         ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-        List var2 = am.getRunningTasks(1);
+        List var2 = Objects.requireNonNull(am).getRunningTasks(1);
         return ((ActivityManager.RunningTaskInfo) var2.get(0)).topActivity.getClassName();
     }
 
@@ -149,7 +152,7 @@ public class BaseTools {
     public static void copy(String content) {
         // 得到剪贴板管理器
         ClipboardManager cmb = (ClipboardManager) RootApplication.getInstance().getSystemService(Context.CLIPBOARD_SERVICE);
-        cmb.setText(content.trim());
+        Objects.requireNonNull(cmb).setText(content.trim());
     }
 
     /**
@@ -168,15 +171,15 @@ public class BaseTools {
      * @param appPackageName 应用包名
      * @return true：安装，false：未安装
      */
-    public static boolean isApplicationAvilible(Context context, String appPackageName) {
+    public static boolean isApplicationAvailable(Context context, String appPackageName) {
         try {
-            // 获取packagemanager
+            // 获取PackageManager
             PackageManager packageManager = context.getPackageManager();
             // 获取所有已安装程序的包信息
-            List<PackageInfo> pinfo = packageManager.getInstalledPackages(0);
-            if (pinfo != null) {
-                for (int i = 0; i < pinfo.size(); i++) {
-                    String pn = pinfo.get(i).packageName;
+            List<PackageInfo> pInfo = packageManager.getInstalledPackages(0);
+            if (pInfo != null) {
+                for (int i = 0; i < pInfo.size(); i++) {
+                    String pn = pInfo.get(i).packageName;
                     if (appPackageName.equals(pn)) {
                         return true;
                     }

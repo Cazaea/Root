@@ -1,5 +1,6 @@
 package i.am.lucky.data.room;
 
+import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
 
 import i.am.lucky.utils.AppExecutors;
@@ -28,8 +29,7 @@ public class UserDataBaseSource {
         this.mUserDao = mUserDao;
     }
 
-    public static UserDataBaseSource getInstance(@NonNull AppExecutors appExecutors,
-                                                 @NonNull UserDao tasksDao) {
+    public static UserDataBaseSource getInstance(@NonNull AppExecutors appExecutors, @NonNull UserDao tasksDao) {
         if (INSTANCE == null) {
             synchronized (UserDataBaseSource.class) {
                 if (INSTANCE == null) {
@@ -46,24 +46,18 @@ public class UserDataBaseSource {
      * 如果有多条信息，则返回第一条数据
      */
     public void getSingleBean(UserDataCallback callback) {
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    User user = mUserDao.findSingleBean();
-                    mAppExecutors.mainThread().execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (user == null) {
-                                callback.onDataNotAvailable();
-                            } else {
-                                callback.getData(user);
-                            }
-                        }
-                    });
-                } catch (Exception e) {
-                    DebugUtil.error(e.getMessage());
-                }
+        Runnable runnable = () -> {
+            try {
+                User user = mUserDao.findSingleBean();
+                mAppExecutors.mainThread().execute(() -> {
+                    if (user == null) {
+                        callback.onDataNotAvailable();
+                    } else {
+                        callback.getData(user);
+                    }
+                });
+            } catch (Exception e) {
+                DebugUtil.error(e.getMessage());
             }
         };
         mAppExecutors.diskIO().execute(runnable);
@@ -73,16 +67,13 @@ public class UserDataBaseSource {
      * 先删除后再添加: 重新登录时
      */
     public void addData(@NonNull User user) {
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    int success = mUserDao.deleteAll();
-                    DebugUtil.error("----success:" + success);
-                    mUserDao.addUser(user);
-                } catch (Exception e) {
-                    DebugUtil.error(e.getMessage());
-                }
+        Runnable runnable = () -> {
+            try {
+                int success = mUserDao.deleteAll();
+                DebugUtil.error("----success:" + success);
+                mUserDao.addUser(user);
+            } catch (Exception e) {
+                DebugUtil.error(e.getMessage());
             }
         };
         mAppExecutors.diskIO().execute(runnable);
@@ -93,14 +84,11 @@ public class UserDataBaseSource {
      * 更新数据
      */
     public void updateData(@NonNull User user) {
-        Runnable saveRunnable = new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    mUserDao.addUser(user);
-                } catch (Exception e) {
-                    DebugUtil.error(e.getMessage());
-                }
+        Runnable saveRunnable = () -> {
+            try {
+                mUserDao.addUser(user);
+            } catch (Exception e) {
+                DebugUtil.error(e.getMessage());
             }
         };
         mAppExecutors.diskIO().execute(saveRunnable);
@@ -110,14 +98,11 @@ public class UserDataBaseSource {
      * 清除数据库
      */
     public void deleteAllData() {
-        Runnable saveRunnable = new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    mUserDao.deleteAll();
-                } catch (Exception e) {
-                    DebugUtil.error(e.getMessage());
-                }
+        Runnable saveRunnable = () -> {
+            try {
+                mUserDao.deleteAll();
+            } catch (Exception e) {
+                DebugUtil.error(e.getMessage());
             }
         };
         mAppExecutors.diskIO().execute(saveRunnable);
@@ -126,36 +111,29 @@ public class UserDataBaseSource {
     /**
      * 获取数据集合
      */
+    @SuppressLint("CheckResult")
     public void getAll() {
         UserDataBase.getDatabase().waitDao().findAll()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<User>>() {
-                    @Override
-                    public void accept(List<User> users) throws Exception {
+                .subscribe(users -> {
 //                        DebugUtil.error("----waitList.size():" + waits.size());
 //                        DebugUtil.error("----waitList:" + waits.toString());
-                    }
                 });
     }
+
     /**
      * 获取全部数据集合
      */
     public void getAllData() {
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    List<User> waits = mUserDao.findUsers();
-                    mAppExecutors.mainThread().execute(new Runnable() {
-                        @Override
-                        public void run() {
+        Runnable runnable = () -> {
+            try {
+                List<User> waits = mUserDao.findUsers();
+                mAppExecutors.mainThread().execute(() -> {
 
-                        }
-                    });
-                } catch (Exception e) {
-                    DebugUtil.error(e.getMessage());
-                }
+                });
+            } catch (Exception e) {
+                DebugUtil.error(e.getMessage());
             }
         };
         mAppExecutors.diskIO().execute(runnable);

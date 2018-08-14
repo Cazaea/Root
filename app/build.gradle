@@ -145,6 +145,9 @@ dependencies {
     // Support Special Header
     implementation "com.scwang.smartrefresh:SmartRefreshHeader:$rootProject.refreshVersion"
 
+    // Smart Log Util
+    implementation "com.orhanobut:logger:$rootProject.loggerVersion"
+
     // ping++, 必须添加
     implementation "com.pingxx:pingpp-core:$rootProject.pingxxVersion"
     // 使用支付宝时添加

@@ -2,11 +2,10 @@ package i.am.lucky.viewmodel.gank;
 
 import android.arch.lifecycle.ViewModel;
 
-import i.am.lucky.app.RootApplication;
 import i.am.lucky.app.Constants;
-import i.am.lucky.base.BaseFragment;
+import i.am.lucky.app.RootApplication;
 import i.am.lucky.bean.AndroidBean;
-import i.am.lucky.bean.FrontpageBean;
+import i.am.lucky.bean.FrontPageBean;
 import i.am.lucky.data.model.EverydayModel;
 import i.am.lucky.http.RequestImpl;
 import i.am.lucky.http.cache.ACache;
@@ -22,32 +21,28 @@ import rx.Subscription;
  * @author Cazaea
  * @data 2017/12/15
  */
-
 public class EverydayViewModel extends ViewModel {
 
-    private final EverydayModel mEverydayModel;
-    private final ACache maCache;
+    private EverydayModel mEverydayModel;
+    private ACache maCache;
     private EverydayNavigator everydayNavigator;
-    private BaseFragment<i.am.lucky.databinding.FragmentEverydayBinding> activity;
     private ArrayList<List<AndroidBean>> mLists;
     private ArrayList<String> mBannerImages;
-    private String year = getTodayTime().get(0);
-    private String month = getTodayTime().get(1);
-    private String day = getTodayTime().get(2);
+    private String year;
+    private String month;
+    private String day;
 
     public void setEverydayNavigator(EverydayNavigator everydayNavigator) {
         this.everydayNavigator = everydayNavigator;
     }
 
-    public void onDestroy() {
-        everydayNavigator = null;
-    }
-
-    public EverydayViewModel(BaseFragment<i.am.lucky.databinding.FragmentEverydayBinding> activity) {
-        this.activity = activity;
+    public EverydayViewModel() {
         maCache = ACache.get(RootApplication.getInstance());
         mEverydayModel = new EverydayModel();
-        mEverydayModel.setData(getTodayTime().get(0), getTodayTime().get(1), getTodayTime().get(2));
+        year = getTodayTime().get(0);
+        month = getTodayTime().get(1);
+        day = getTodayTime().get(2);
+        mEverydayModel.setData(year, month, day);
     }
 
     private void showRecyclerViewData() {
@@ -63,7 +58,7 @@ public class EverydayViewModel extends ViewModel {
                     maCache.remove(Constants.EVERYDAY_CONTENT);
                     maCache.put(Constants.EVERYDAY_CONTENT, mLists);
                 } else {
-                    mLists = (ArrayList<List<AndroidBean>>) ACache.get(activity.getContext()).getAsObject(Constants.EVERYDAY_CONTENT);
+                    mLists = (ArrayList<List<AndroidBean>>) maCache.getAsObject(Constants.EVERYDAY_CONTENT);
                     if (mLists != null && mLists.size() > 0) {
                         everydayNavigator.showListView(mLists);
                     } else {
@@ -88,13 +83,13 @@ public class EverydayViewModel extends ViewModel {
 
             @Override
             public void addSubscription(Subscription subscription) {
-                activity.addSubscription(subscription);
+                everydayNavigator.addRxSubscription(subscription);
             }
         });
     }
 
     private void handleNoData() {
-        mLists = (ArrayList<List<AndroidBean>>) ACache.get(activity.getContext()).getAsObject(Constants.EVERYDAY_CONTENT);
+        mLists = (ArrayList<List<AndroidBean>>) maCache.getAsObject(Constants.EVERYDAY_CONTENT);
         if (mLists != null && mLists.size() > 0) {
             everydayNavigator.showListView(mLists);
         } else {
@@ -102,7 +97,7 @@ public class EverydayViewModel extends ViewModel {
         }
     }
 
-    private void showBanncerPage() {
+    private void showBannerPage() {
         mEverydayModel.showBannerPage(new RequestImpl() {
             @Override
             public void loadSuccess(Object object) {
@@ -111,9 +106,9 @@ public class EverydayViewModel extends ViewModel {
                 } else {
                     mBannerImages.clear();
                 }
-                FrontpageBean bean = (FrontpageBean) object;
+                FrontPageBean bean = (FrontPageBean) object;
                 if (bean != null && bean.getResult() != null && bean.getResult().getFocus() != null && bean.getResult().getFocus().getResult() != null) {
-                    final ArrayList<FrontpageBean.ResultBannerBean.FocusBean.ResultBeanX> result = (ArrayList<FrontpageBean.ResultBannerBean.FocusBean.ResultBeanX>) bean.getResult().getFocus().getResult();
+                    final ArrayList<FrontPageBean.ResultBannerBean.FocusBean.ResultBeanX> result = (ArrayList<FrontPageBean.ResultBannerBean.FocusBean.ResultBeanX>) bean.getResult().getFocus().getResult();
                     if (result != null && result.size() > 0) {
                         for (int i = 0; i < result.size(); i++) {
                             //获取所有图片
@@ -135,16 +130,16 @@ public class EverydayViewModel extends ViewModel {
 
             @Override
             public void addSubscription(Subscription subscription) {
-                activity.addSubscription(subscription);
+                everydayNavigator.addRxSubscription(subscription);
             }
         });
     }
 
     public void handleCache() {
-        ArrayList<FrontpageBean.ResultBannerBean.FocusBean.ResultBeanX> result = null;
+        ArrayList<FrontPageBean.ResultBannerBean.FocusBean.ResultBeanX> result = null;
         try {
             mBannerImages = (ArrayList<String>) maCache.getAsObject(Constants.BANNER_PIC);
-            result = (ArrayList<FrontpageBean.ResultBannerBean.FocusBean.ResultBeanX>) maCache.getAsObject(Constants.BANNER_PIC_DATA);
+            result = (ArrayList<FrontPageBean.ResultBannerBean.FocusBean.ResultBeanX>) maCache.getAsObject(Constants.BANNER_PIC_DATA);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -152,7 +147,7 @@ public class EverydayViewModel extends ViewModel {
             // 加上缓存使其可以点击
             everydayNavigator.showBannerView(mBannerImages, result);
         } else {
-            showBanncerPage();
+            showBannerPage();
         }
         mLists = (ArrayList<List<AndroidBean>>) maCache.getAsObject(Constants.EVERYDAY_CONTENT);
         if (mLists != null && mLists.size() > 0) {
@@ -166,17 +161,18 @@ public class EverydayViewModel extends ViewModel {
 
     public void loadData() {
         String oneData = SPUtils.getString("everyday_data", "2016-11-26");
-//        DebugUtil.error("----"+oneData);
-        if (!oneData.equals(TimeUtil.getData())) {// 是第二天
-            if (TimeUtil.isRightTime()) {//大于12：30,请求
-
+        if (!oneData.equals(TimeUtil.getData())) {
+            // 是第二天
+            if (TimeUtil.isRightTime()) {
+                //大于12：30,请求
                 everydayNavigator.setIsOldDayRequest(false);
                 mEverydayModel.setData(getTodayTime().get(0), getTodayTime().get(1), getTodayTime().get(2));
                 everydayNavigator.showRotaLoading();
-                showBanncerPage();
+                showBannerPage();
                 showRecyclerViewData();
-            } else {// 小于，取缓存没有请求前一天
 
+            } else {
+                // 小于，取缓存没有请求前一天
                 ArrayList<String> lastTime = TimeUtil.getLastTime(getTodayTime().get(0), getTodayTime().get(1), getTodayTime().get(2));
                 mEverydayModel.setData(lastTime.get(0), lastTime.get(1), lastTime.get(2));
                 year = lastTime.get(0);
@@ -207,5 +203,18 @@ public class EverydayViewModel extends ViewModel {
         list.add(month);
         list.add(day);
         return list;
+    }
+
+    public void onDestroy() {
+        everydayNavigator = null;
+        mEverydayModel = null;
+        if (mLists != null) {
+            mLists.clear();
+            mLists = null;
+        }
+        if (mBannerImages != null) {
+            mBannerImages.clear();
+            mBannerImages = null;
+        }
     }
 }

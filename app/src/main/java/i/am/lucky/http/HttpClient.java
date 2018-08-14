@@ -1,7 +1,7 @@
 package i.am.lucky.http;
 
 import i.am.lucky.http.utils.BuildFactory;
-import i.am.lucky.bean.FrontpageBean;
+import i.am.lucky.bean.FrontPageBean;
 import i.am.lucky.bean.GankIoDataBean;
 import i.am.lucky.bean.GankIoDayBean;
 import i.am.lucky.bean.HotMovieBean;
@@ -26,6 +26,7 @@ import rx.Observable;
 /**
  * @author Cazaea
  * @date 16/11/21
+ * <p>
  * 网络请求类（一个接口一个方法）
  */
 public interface HttpClient {
@@ -65,7 +66,7 @@ public interface HttpClient {
      * 首页轮播图
      */
     @GET("ting?from=android&version=5.8.1.0&channel=ppzs&operator=3&method=baidu.ting.plaza.index&cuid=89CF1E1A06826F9AB95A34DC0F6AAA14")
-    Observable<FrontpageBean> getFrontPage();
+    Observable<FrontPageBean> getFrontPage();
 
     /**
      * 玩安卓轮播图

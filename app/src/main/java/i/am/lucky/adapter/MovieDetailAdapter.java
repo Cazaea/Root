@@ -1,5 +1,6 @@
 package i.am.lucky.adapter;
 
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +18,10 @@ import i.am.lucky.view.webview.WebViewActivity;
  */
 
 public class MovieDetailAdapter extends BaseRecyclerViewAdapter<PersonBean> {
+
+    @NonNull
     @Override
-    public BaseRecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public BaseRecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new ViewHolder(parent, R.layout.item_movie_detail_person);
     }
 

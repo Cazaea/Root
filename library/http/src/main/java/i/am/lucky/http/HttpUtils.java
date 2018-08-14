@@ -59,7 +59,7 @@ public class HttpUtils {
     private Gson gson;
     private Context context;
     private Object gankHttps;
-    private IpmlTokenGetListener listener;
+    private ImplTokenGetListener listener;
     private boolean debug;
     // GankIo、豆瓣、（轮播图）
     public final static String API_GANKIO = "https://gank.io/api/";
@@ -197,7 +197,7 @@ public class HttpUtils {
         return client1;
     }
 
-    public void setTokenListener(IpmlTokenGetListener listener) {
+    public void setTokenListener(ImplTokenGetListener listener) {
         this.listener = listener;
     }
 

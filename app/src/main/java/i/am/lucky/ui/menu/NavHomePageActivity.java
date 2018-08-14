@@ -20,12 +20,7 @@ public class NavHomePageActivity extends AppCompatActivity {
         // 解决7.0以上系统 滑动到顶部 标题裁减一半的问题
         setSupportActionBar(binding.detailToolbar);
 
-        binding.fabShare.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ShareUtils.share(v.getContext(), R.string.string_share_text);
-            }
-        });
+        binding.fabShare.setOnClickListener(v -> ShareUtils.share(v.getContext(), R.string.string_share_text));
     }
 
     public static void startHome(Context mContext) {

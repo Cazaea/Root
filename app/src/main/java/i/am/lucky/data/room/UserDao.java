@@ -28,7 +28,6 @@ public interface UserDao {
     @Query("SELECT * FROM User")
     Flowable<List<User>> findAll();
 
-
     /**
      * 查找数据库的全部内容
      *
@@ -36,7 +35,6 @@ public interface UserDao {
      */
     @Query("SELECT * FROM User")
     List<User> findUsers();
-
 
     /**
      * 查找任何的bean：
