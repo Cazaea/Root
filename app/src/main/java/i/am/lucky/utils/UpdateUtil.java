@@ -1,6 +1,7 @@
 package i.am.lucky.utils;
 
 import android.app.Activity;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 
 import i.am.lucky.BuildConfig;
@@ -20,6 +21,7 @@ import rx.schedulers.Schedulers;
 public class UpdateUtil {
 
     final private static String UPDATE_TOKEN = "5c5cbd9772b995661a3f00b72e429233";
+//    final private static String UPDATE_TOKEN = "798d521c81bc261bc06a469b2aef74d8";
 
     /**
      * 检查更新

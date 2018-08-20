@@ -45,9 +45,10 @@ import static i.am.lucky.viewmodel.gank.EverydayViewModel.getTodayTime;
  * 是：判断是否是大于12：30
  * *****     |是：刷新当天数据
  * *****     |否：使用缓存：|无：请求前一天数据,直到请求到数据为止
- * **********             |有：使用缓存
- * 否：使用缓存 ： |无：请求今天数据
- * **********    |有：使用缓存
+ * **********              |有：使用缓存
+ * 否：使用缓存 ：
+ * *****     |无：请求今天数据
+ * *****     |有：使用缓存
  */
 public class EverydayFragment extends BaseFragment<FragmentEverydayBinding> implements EverydayNavigator {
 

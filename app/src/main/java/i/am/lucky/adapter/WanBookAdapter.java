@@ -46,7 +46,7 @@ public class WanBookAdapter extends BaseRecyclerViewAdapter<BooksBean> {
                 binding.llItemTop.setOnClickListener(new PerfectClickListener() {
                     @Override
                     protected void onNoDoubleClick(View v) {
-                        BookDetailActivity.start(activity,book,binding.ivTopPhoto);
+                        BookDetailActivity.start(activity, book, binding.ivTopPhoto);
                     }
                 });
             }

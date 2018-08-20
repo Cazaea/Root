@@ -46,7 +46,7 @@ public class TransitionActivity extends AppCompatActivity {
     private void showImage() {
         int i = new Random().nextInt(ConstantsImageUrl.TRANSITION_URLS.length);
         // 先显示默认图
-        mBinding.ivDefultPic.setImageDrawable(CommonUtils.getDrawable(R.drawable.img_transition_default));
+        mBinding.ivDefaultPic.setImageDrawable(CommonUtils.getDrawable(R.drawable.img_transition_default));
         // 加载网路图片
         Glide.with(this)
                 .load(ConstantsImageUrl.TRANSITION_URLS[i])
@@ -86,7 +86,7 @@ public class TransitionActivity extends AppCompatActivity {
         private void something(TransitionActivity outer, Message msg) {
             switch (msg.what) {
                 case 0:
-                    outer.mBinding.ivDefultPic.setVisibility(View.GONE);
+                    outer.mBinding.ivDefaultPic.setVisibility(View.GONE);
                     break;
                 case 1:
                     outer.toMainActivity();

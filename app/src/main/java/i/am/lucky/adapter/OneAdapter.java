@@ -2,6 +2,7 @@ package i.am.lucky.adapter;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
 
@@ -11,6 +12,8 @@ import i.am.lucky.base.baseadapter.BaseRecyclerViewHolder;
 import i.am.lucky.bean.moviechild.SubjectsBean;
 import i.am.lucky.databinding.ItemOneBinding;
 import i.am.lucky.ui.movie.OneMovieDetailActivity;
+import i.am.lucky.utils.PerfectClickListener;
+
 import com.nineoldandroids.view.ViewHelper;
 import com.nineoldandroids.view.ViewPropertyAnimator;
 
@@ -42,8 +45,16 @@ public class OneAdapter extends BaseRecyclerViewAdapter<SubjectsBean> {
         public void onBindViewHolder(final SubjectsBean positionData, final int position) {
             if (positionData != null) {
                 binding.setSubjectsBean(positionData);
-                binding.setCallback(subjectsBean -> OneMovieDetailActivity.start(activity, positionData, binding.ivOnePhoto));
                 binding.executePendingBindings();
+                // 不能排除双击困扰
+//                binding.setCallback(subjectsBean -> OneMovieDetailActivity.start(activity, positionData, binding.ivOnePhoto));
+                binding.llOneItem.setOnClickListener(new PerfectClickListener() {
+                    @Override
+                    protected void onNoDoubleClick(View v) {
+                        OneMovieDetailActivity.start(activity, positionData, binding.ivOnePhoto);
+                    }
+                });
+
 
                 // 图片
 //                ImgLoadUtil.displayEspImage(positionData.getImages().getLarge(), binding.ivOnePhoto,0);

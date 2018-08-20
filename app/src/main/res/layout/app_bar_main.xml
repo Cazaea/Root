@@ -9,7 +9,6 @@
         android:orientation="vertical"
         tools:context="i.am.lucky.MainActivity">
 
-
         <!--状态栏-->
         <View
             android:id="@+id/view_status"

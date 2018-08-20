@@ -73,9 +73,9 @@
     <string name="string_url_gankio">http://gank.io/api</string>
     <string name="string_url_douban">https://developers.douban.com/wiki/?title=terms</string>
     <!--更新日志-->
-    <string name="string_url_update_log">http://Cazaea.me/2016/12/30/%E6%9B%B4%E6%96%B0%E6%97%A5%E5%BF%97-%E4%BA%91%E9%98%85/</string>
+    <string name="string_url_update_log">http://jingbin.me/2016/12/30/%E6%9B%B4%E6%96%B0%E6%97%A5%E5%BF%97-%E4%BA%91%E9%98%85/</string>
     <!--问题归纳-->
-    <string name="string_url_faq">http://Cazaea.me/2016/12/25/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98-%E4%BA%91%E9%98%85/</string>
+    <string name="string_url_faq">http://jingbin.me/2016/12/25/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98-%E4%BA%91%E9%98%85/</string>
     <!--干货闲读-->
     <string name="string_url_xiandu">https://gank.io/xiandu</string>
     <!--玩安卓-->
